@@ -75,11 +75,3 @@ bower_components/
 .grunt/
 src/vendor/
 dist/
-src/fortran_routing/Reservoir_Binding/kernels/reservoir_testing_files/2010-10-01_06:00:00.15min.usgsTimeSlice.ncdf
-src/fortran_routing/Reservoir_Binding/kernels/reservoir_testing_files/2010-10-01_06:00:00.15min.usgsTimeSlice.ncdf
-src/fortran_routing/Reservoir_Binding/kernels/reservoir_testing_files/2010-10-01_06:00:00.15min.usgsTimeSlice.ncdf
-src/fortran_routing/Reservoir_Binding/kernels/reservoir_testing_files/2010-10-01_06_00_00.15min.usgsTimeSlice.ncdf
-src/fortran_routing/Reservoir_Binding/kernels/reservoir_testing_files/2019-08-18_00.60min.CCHC1.RFCTimeSeries (1).ncdf
-src/fortran_routing/Reservoir_Binding/kernels/reservoir_testing_files/2010-10-01_06:00:00.15min.usgsTimeSlice.ncdf
-src/fortran_routing/Reservoir_Binding/kernels/reservoir_testing_files/2010-10-01_06:00:00.15min.usgsTimeSlice.ncdf
-src/fortran_routing/Reservoir_Binding/kernels/reservoir_testing_files/2019-08-18_00.60min.CCHC1.RFCTimeSeries.ncdf
