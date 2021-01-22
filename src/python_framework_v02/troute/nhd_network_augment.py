@@ -87,7 +87,15 @@ def get_network_data(network_name):
 
     # Load network meta data for the Cape Fear Basin
     supernetwork = network_name
+    
+    """
     network_data = nnu.set_supernetwork_data(
+        supernetwork=supernetwork, geo_input_folder=geo_input_folder
+    )
+    """
+    
+    # changed to updated function name in nhd_network_utilities_v02.py
+    network_data = nnu.set_supernetwork_parameters(
         supernetwork=supernetwork, geo_input_folder=geo_input_folder
     )
 
