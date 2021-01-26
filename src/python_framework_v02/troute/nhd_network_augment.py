@@ -752,12 +752,10 @@ def main():
 
     print('=========')
     print('CODE STARTING')
-    print('=========')
-
+    
     # grab the start time in a variable
     objTimeStart = time.time()  # record the start time, for the whole code loop
     strCurrentTime = time.asctime(time.localtime(time.time()))
-    print('Time ALL Code Started: {}'.format(strCurrentTime))
     
     # unpack command line arguments
     args = _handle_args()
@@ -766,6 +764,19 @@ def main():
     prune = args.prune
     snap = args.snap
     return_original = args.return_original
+    
+    print('---------')
+    print('Script:                nhd_network_augment.py')
+    print('Last Edit Date:        01/26/21')
+    print('---------')
+    print('Time ALL Code Started: {}'.format(strCurrentTime))
+    print('Time Code Started:     {}'.format(strCurrentTime))
+    print('Supernetwork:          {}'.format(supernetwork))
+    print('Threshold:             {}'.format(threshold))
+    print('Prune:                 {}'.format(prune))
+    print('Snap:                  {}'.format(snap))
+    print('Return Original:       {}'.format(return_original))
+    
 
     # get network data
     print("Extracting and organizing supernetwork data")
@@ -977,7 +988,7 @@ def main():
     print("Number of segments in modified RouteLink:", len(RouteLink_edit))
     print('---------')
     print('OVERALL: It took {} [HH:MM:SS.SS] (total) to execute all of this code'.format(funHmsString(objTimeEnd - objTimeStart)))
-    print('=========')
+    print('---------')
     print('CODE FINISHED')
     print('=========')
     
