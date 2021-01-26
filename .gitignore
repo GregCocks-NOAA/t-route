@@ -77,3 +77,4 @@ src/vendor/
 dist/
 test/input/geo/Channels/RouteLink_NHDPLUS.nwm.v2.0.4.nc
 test/input/geo/Channels/_superseded/RouteLink_NHDPLUS.nwm.v2.0.4.nc
+src/python_framework_v02/troute/RouteLink_CONUS.nc

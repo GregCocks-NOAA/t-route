@@ -11,6 +11,8 @@ import argparse
 import json
 from tqdm import tqdm
 import time
+import datetime
+import statistics
 
 root = pathlib.Path("../../../").resolve()
 sys.path.append(os.path.join(root, "src", "python_framework_v01"))
@@ -19,6 +21,16 @@ import nhd_network_utilities_v02 as nnu
 import nhd_network
 import nhd_io
 import network_dl
+
+
+
+
+def funHmsString(sec_elapsed):
+    h = int(sec_elapsed / (60 * 60))
+    m = int((sec_elapsed % (60 * 60)) / 60)
+    s = sec_elapsed % 60.
+    return "{}:{:>02}:{:>05.2f}".format(h, m, s)
+    # end funHmsString
 
 
 def _handle_args():
@@ -738,6 +750,15 @@ def segment_merge(data_native, data, network_data, thresh, pruned_segments):
 
 def main():
 
+    print('=========')
+    print('CODE STARTING')
+    print('=========')
+
+    # grab the start time in a variable
+    objTimeStart = time.time()  # record the start time, for the whole code loop
+    strCurrentTime = time.asctime(time.localtime(time.time()))
+    print('Time ALL Code Started: {}'.format(strCurrentTime))
+    
     # unpack command line arguments
     args = _handle_args()
     supernetwork = args.supernetwork
@@ -772,20 +793,33 @@ def main():
             + "m_prune_snap_merge.json"
         )
 
+        print('---------')
         print("Prune, snap, then merge:")
+        
+        print('---')
         print("pruning headwaters...")
+        objTimeStartSection = time.time()  # record the start time, for this part of the code
         data_pruned = prune_headwaters(data, threshold, network_data)
+        objTimeEndSection = time.time()  # record the end time, for this part of the code
+        print('--> took {} [HH:MM:SS.SS] to execute this section of the code'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
 
         # identify pruned segments
         pruned_segs = list(np.setdiff1d(data.index, data_pruned.index))
 
+        print('---')
         print("snapping junctions...")
+        objTimeStartSection = time.time()  # record the start time, for this part of the code
         data_snapped = snap_junctions(data_pruned, threshold, network_data)
+        objTimeEndSection = time.time()  # record the end time, for this part of the code
+        print('--> it took {} [HH:MM:SS.SS] to execute this section of the code'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
 
+        print('---')
         print("merging segments...")
-        data_merged, qlat_destinations = segment_merge(
-            data, data_snapped, network_data, threshold, pruned_segs
-        )
+        objTimeStartSection = time.time()  # record the start time, for this part of the code
+        data_merged, qlat_destinations = segment_merge(data, data_snapped, network_data, threshold, pruned_segs)
+        objTimeEndSection = time.time()  # record the end time, for this part of the code
+        print('--> it took {} [HH:MM:SS.SS] to execute this section of the code'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
+
 
     if snap and not prune:
         dirname = "RouteLink_" + supernetwork + "_" + str(threshold) + "m_snap_merge"
@@ -796,14 +830,23 @@ def main():
             "CrossWalk_" + supernetwork + "_" + str(threshold) + "m_snap_merge.json"
         )
 
+        print('---------')
         print("Snap and merge:")
+        
+        print('---')
         print("snapping junctions...")
+        objTimeStartSection = time.time()  # record the start time, for this part of the code
         data_snapped = snap_junctions(data, threshold, network_data)
+        objTimeEndSection = time.time()  # record the end time, for this part of the code
+        print('--> it took {} [HH:MM:SS.SS] to execute this section of the code'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
 
+        print('---')
         print("merging segments...")
-        data_merged, qlat_destinations = segment_merge(
-            data, data_snapped, network_data, threshold, pruned_segs
-        )
+        objTimeStartSection = time.time()  # record the start time, for this part of the code
+        data_merged, qlat_destinations = segment_merge(data, data_snapped, network_data, threshold, pruned_segs)
+        objTimeEndSection = time.time()  # record the end time, for this part of the code
+        print('--> it took {} [HH:MM:SS.SS] to execute this section of the code'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
+
 
     if not snap and prune:
         dirname = "RouteLink_" + supernetwork + "_" + str(threshold) + "m_prune_merge"
@@ -814,14 +857,23 @@ def main():
             "CrossWalk_" + supernetwork + "_" + str(threshold) + "m_prune_merge.json"
         )
 
+        print('---------')
         print("Prune and merge:")
+        
+        print('---')
         print("snapping junctions...")
+        objTimeStartSection = time.time()  # record the start time, for this part of the code
         data_snapped = snap_junctions(data, threshold, network_data)
+        objTimeEndSection = time.time()  # record the end time, for this part of the code
+        print('--> it took {} [HH:MM:SS.SS] to execute this section of the code'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
 
+        print('---')
         print("merging segments...")
-        data_merged, qlat_destinations = segment_merge(
-            data, data_snapped, network_data, threshold, pruned_segs
-        )
+        objTimeStartSection = time.time()  # record the start time, for this part of the code
+        data_merged, qlat_destinations = segment_merge(data, data_snapped, network_data, threshold, pruned_segs)
+        objTimeEndSection = time.time()  # record the end time, for this part of the code
+        print('--> it took {} [HH:MM:SS.SS] to execute this section of the code'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
+
 
     if not snap and not prune:
         dirname = "RouteLink_" + supernetwork + "_" + str(threshold) + "m_merge"
@@ -829,13 +881,21 @@ def main():
         filename_cw = (
             "CrossWalk_" + supernetwork + "_" + str(threshold) + "m_merge.json"
         )
+        
+        print('---------')
         print("Just merge:")
+        
+        print('---')
+        objTimeStartSection = time.time()  # record the start time, for this part of the code
         print("merging segments...")
-        data_merged, qlat_destinations = segment_merge(
-            data, data, network_data, threshold, pruned_segs
-        )
+        data_merged, qlat_destinations = segment_merge(data, data, network_data, threshold, pruned_segs)
+        objTimeEndSection = time.time()  # record the end time, for this part of the code
+        print('--> it took {} [HH:MM:SS.SS] to execute this section of the code'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
+
 
     # update RouteLink data
+    print('---------')
+    objTimeStartSection = time.time()  # record the start time, for this part of the code
     RouteLink_edit = RouteLink.loc[data_merged.index.values]
 
     for (columnName, columnData) in data_merged.iteritems():
@@ -900,10 +960,27 @@ def main():
 
         RouteLink_domain = RouteLink_domain.drop(columns=["time", "gages"])
         RouteLink_domain.to_file(os.path.join(dir_path, filename))
+    
+    objTimeEndSection = time.time()  # record the end time, for this part of the code
+    print('--> Export Data, Etc: it took {} [HH:MM:SS.SS] to execute this section of the code'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
 
-    print("Number of segments in modified RouteLink:", len(RouteLink_edit))
+    # grab the (overall) end time in a variable
+    objTimeEnd = time.time()  # record the end time total, overall
+    strCurrentTime = time.asctime(time.localtime(time.time()))
+    print('Time ALL Code Finished: {}'.format(strCurrentTime))
+    
+    # let the user know summary of what happened
+    print('---------')
+    print('Results Summary')
+    print('---------')
     print("Number of segments in original RouteLink:", len(RouteLink_domain))
-
+    print("Number of segments in modified RouteLink:", len(RouteLink_edit))
+    print('---------')
+    print('OVERALL: It took {} [HH:MM:SS.SS] (total) to execute all of this code'.format(funHmsString(objTimeEnd - objTimeStart)))
+    print('=========')
+    print('CODE FINISHED')
+    print('=========')
+    
 
 if __name__ == "__main__":
     main()
