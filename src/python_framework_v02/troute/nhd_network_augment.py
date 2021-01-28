@@ -55,7 +55,7 @@ def _handle_args():
         "--threshold_length",
         help = "threshold segment length (meters)",
         dest = "threshold",
-        default = 250,
+        default = 200,
         type = int,
     )
     parser.add_argument(
@@ -437,7 +437,7 @@ def len_weighted_av(df, var, weight):
     # keep track of function calls
     global intCounter_fun_len_weighted_av
     intCounter_fun_len_weighted_av += 1
-    if int(intCounter_fun_len_weighted_av / 100) == intCounter_fun_len_weighted_av / 100:
+    if int(intCounter_fun_len_weighted_av / 5000) == intCounter_fun_len_weighted_av / 5000:
         print('--> Length Weighted Average Function Called: {0:,} Times'.format(intCounter_fun_len_weighted_av))
     
     """
@@ -462,7 +462,7 @@ def merge_parameters(to_merge):
     # keep track of function calls
     global intCounter_fun_merge_parameters
     intCounter_fun_merge_parameters += 1
-    if int(intCounter_fun_merge_parameters / 100) == intCounter_fun_merge_parameters / 100:
+    if int(intCounter_fun_merge_parameters / 1000) == intCounter_fun_merge_parameters / 1000:
         print('--> Merge Parameters Function Called: {0:,} Times'.format(intCounter_fun_merge_parameters))
     
     """
@@ -526,7 +526,7 @@ def upstream_merge(data_merged, chop):
     # keep track of function calls
     global intCounter_fun_upstream_merge
     intCounter_fun_upstream_merge += 1
-    if int(intCounter_fun_upstream_merge / 100) == intCounter_fun_upstream_merge / 100:
+    if int(intCounter_fun_upstream_merge / 1000) == intCounter_fun_upstream_merge / 1000:
         print('----> Upstream Merge Function Called: {0:,} Times'.format(intCounter_fun_upstream_merge))
     
     """
@@ -564,7 +564,7 @@ def downstream_merge(data_merged, chop, thresh):
     # keep track of function calls
     global intCounter_fun_downstream_merge
     intCounter_fun_downstream_merge += 1
-    if int(intCounter_fun_downstream_merge / 100) == intCounter_fun_downstream_merge / 100:
+    if int(intCounter_fun_downstream_merge / 1000) == intCounter_fun_downstream_merge / 1000:
         print('-----> Downstream Merge Function Called: {0:,} Times'.format(intCounter_fun_downstream_merge))
     
     """
@@ -609,7 +609,7 @@ def merge_all(rch, data, chop):
     # keep track of function calls
     global intCounter_fun_merge_all
     intCounter_fun_merge_all += 1
-    if int(intCounter_fun_merge_all / 100) == intCounter_fun_merge_all / 100:
+    if int(intCounter_fun_merge_all / 1000) == intCounter_fun_merge_all / 1000:
         print('------> Merge All Function Called: {0:,} Times'.format(intCounter_fun_merge_all))
     
     """
@@ -651,7 +651,7 @@ def update_network_data(data, rch, data_merged, chop, rconn):
     # keep track of network data
     global intCounter_fun_update_network_data
     intCounter_fun_update_network_data += 1
-    if int(intCounter_fun_update_network_data / 100) == intCounter_fun_update_network_data / 100:
+    if int(intCounter_fun_update_network_data / 1000) == intCounter_fun_update_network_data / 1000:
         print('-------> Update Network Data Function Called: {0:,} Times'.format(intCounter_fun_update_network_data))
     
     """
@@ -915,8 +915,9 @@ def main():
     funWriteToScreenAndTextFile('Last Edit Date:        01/27/21 - GJC_Development Branch')
     funWriteToScreenAndTextFile('---------')
     funWriteToScreenAndTextFile('Time ALL Code Started: {}'.format(strCurrentTime))
+    funWriteToScreenAndTextFile('Arguments:             {}'.format(args))
     funWriteToScreenAndTextFile('Supernetwork:          {}'.format(supernetwork))
-    funWriteToScreenAndTextFile('Threshold:             {}'.format(threshold))
+    funWriteToScreenAndTextFile('Threshold (m):         {}'.format(threshold))
     funWriteToScreenAndTextFile('Prune:                 {}'.format(prune))
     funWriteToScreenAndTextFile('Snap:                  {}'.format(snap))
     funWriteToScreenAndTextFile('Return Original:       {}'.format(return_original))
