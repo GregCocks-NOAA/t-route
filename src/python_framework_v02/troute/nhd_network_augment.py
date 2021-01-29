@@ -55,7 +55,7 @@ def _handle_args():
         "--threshold_length",
         help = "threshold segment length (meters)",
         dest = "threshold",
-        default = 200,
+        default = 250,
         type = int,
     )
     parser.add_argument(
@@ -434,12 +434,14 @@ def snap_junctions(data, threshold, network_data):
 
 def len_weighted_av(df, var, weight):
 
+    # function start time
+    objFunStartTime = time.time()
+    
     # keep track of function calls
     global intCounter_fun_len_weighted_av
+    global intTotalTime_fun_len_weighted_av
     intCounter_fun_len_weighted_av += 1
-    if int(intCounter_fun_len_weighted_av / 5000) == intCounter_fun_len_weighted_av / 5000:
-        print('--> Length Weighted Average Function Called: {0:,} Times'.format(intCounter_fun_len_weighted_av))
-    
+        
     """
     Calculate a weighted average
     Args:
@@ -451,7 +453,14 @@ def len_weighted_av(df, var, weight):
     """
 
     x = (df[weight] * df[var]).sum() / df[weight].sum()
-
+    
+    # add the time taken to the cumulative time
+    intTotalTime_fun_len_weighted_av += time.time() - objFunStartTime
+    
+    # let the user know at increments
+    if int(intCounter_fun_len_weighted_av / 25000) == intCounter_fun_len_weighted_av / 25000:
+        print('--> Function: Length Weighted Average called: {:,} times for a total of {:,} minutes'.format(intCounter_fun_len_weighted_av, round(intTotalTime_fun_len_weighted_av / 60, 1)))
+        
     return x
     
     # end len_weighted_av
@@ -459,11 +468,13 @@ def len_weighted_av(df, var, weight):
 
 def merge_parameters(to_merge):
 
+    # function start time
+    objFunStartTime = time.time()
+    
     # keep track of function calls
     global intCounter_fun_merge_parameters
+    global intTotalTime_fun_merge_parameters
     intCounter_fun_merge_parameters += 1
-    if int(intCounter_fun_merge_parameters / 1000) == intCounter_fun_merge_parameters / 1000:
-        print('--> Merge Parameters Function Called: {0:,} Times'.format(intCounter_fun_merge_parameters))
     
     """
     length-weighted averaging of channel routing parameters across merged segments
@@ -490,6 +501,13 @@ def merge_parameters(to_merge):
     data_replace.loc[idx, "MusK"] = len_weighted_av(to_merge, "MusK", "Length")
     data_replace.loc[idx, "MusX"] = len_weighted_av(to_merge, "MusX", "Length")
     data_replace.loc[idx, "ChSlp"] = len_weighted_av(to_merge, "ChSlp", "Length")
+    
+    # add the time taken to the cumulative time
+    intTotalTime_fun_merge_parameters += time.time() - objFunStartTime
+    
+    # let the user know at increments
+    if int(intCounter_fun_merge_parameters / 5000) == intCounter_fun_merge_parameters / 5000:
+        print('----> Function: Merge Parameters called: {:,} times for a total of {:,} minutes'.format(intCounter_fun_merge_parameters, round(intTotalTime_fun_merge_parameters / 60, 1)))
 
     return data_replace
     
@@ -498,11 +516,13 @@ def merge_parameters(to_merge):
 
 def correct_reach_connections(data_merged):
 
+    # function start time
+    objFunStartTime = time.time()
+    
     # keep track of function calls
     global intCounter_fun_correct_reach_connections
+    global intTotalTime_fun_correct_reach_connections
     intCounter_fun_correct_reach_connections += 1
-    if int(intCounter_fun_correct_reach_connections / 100) == intCounter_fun_correct_reach_connections / 100:
-        print('---> Correct Reach Connections Function Called: {0:,} Times'.format(intCounter_fun_correct_reach_connections))
     
     """
     Update downstream connections ("to") for segments in a merged reach.
@@ -515,6 +535,13 @@ def correct_reach_connections(data_merged):
 
     for i, idx in enumerate(data_merged.index.values[0:-1]):
         data_merged.loc[idx, "to"] = data_merged.index.values[i + 1]
+        
+    # add the time taken to the cumulative time
+    intTotalTime_fun_correct_reach_connections += time.time() - objFunStartTime
+    
+    # let the user know at increments
+    if int(intCounter_fun_correct_reach_connections / 5000) == intCounter_fun_correct_reach_connections / 5000:
+        print('------> Function: Correct Reach Connections called: {:,} times for a total of {:,} minutes'.format(intCounter_fun_correct_reach_connections, round(intTotalTime_fun_correct_reach_connections / 60, 1)))
 
     return data_merged
     
@@ -523,11 +550,13 @@ def correct_reach_connections(data_merged):
 
 def upstream_merge(data_merged, chop):
 
+    # function start time
+    objFunStartTime = time.time()
+    
     # keep track of function calls
     global intCounter_fun_upstream_merge
+    global intTotalTime_fun_upstream_merge
     intCounter_fun_upstream_merge += 1
-    if int(intCounter_fun_upstream_merge / 1000) == intCounter_fun_upstream_merge / 1000:
-        print('----> Upstream Merge Function Called: {0:,} Times'.format(intCounter_fun_upstream_merge))
     
     """
     Merge a short reach tail segment with upstream neighbor
@@ -554,6 +583,13 @@ def upstream_merge(data_merged, chop):
     # update "chop" list with merged-out segment IDs
     chop.append(to_merge.head(1).index.values[0])
 
+    # add the time taken to the cumulative time
+    intTotalTime_fun_upstream_merge += time.time() - objFunStartTime
+    
+    # let the user know at increments
+    if int(intCounter_fun_upstream_merge / 5000) == intCounter_fun_upstream_merge / 5000:
+        print('--------> Function: Upstream Merge called: {:,} times for a total of {:,} minutes'.format(intCounter_fun_upstream_merge, round(intTotalTime_fun_upstream_merge / 60, 1)))
+        
     return data_merged, chop
     
     # upstream_merge
@@ -561,11 +597,13 @@ def upstream_merge(data_merged, chop):
 
 def downstream_merge(data_merged, chop, thresh):
 
+    # function start time
+    objFunStartTime = time.time()
+    
     # keep track of function calls
     global intCounter_fun_downstream_merge
+    global intTotalTime_fun_downstream_merge
     intCounter_fun_downstream_merge += 1
-    if int(intCounter_fun_downstream_merge / 1000) == intCounter_fun_downstream_merge / 1000:
-        print('-----> Downstream Merge Function Called: {0:,} Times'.format(intCounter_fun_downstream_merge))
     
     """
     Merge short segments with their downstream neighbors
@@ -598,7 +636,14 @@ def downstream_merge(data_merged, chop, thresh):
 
     # update "chop" list with merged-out segment IDs
     chop.append(to_merge.head(1).index.values[0])
-
+    
+    # add the time taken to the cumulative time
+    intTotalTime_fun_downstream_merge += time.time() - objFunStartTime
+    
+    # let the user know at increments
+    if int(intCounter_fun_downstream_merge / 5000) == intCounter_fun_downstream_merge / 5000:
+        print('----------> Function: Downstream Merge called: {:,} times for a total of {:,} minutes'.format(intCounter_fun_downstream_merge, round(intTotalTime_fun_downstream_merge / 60, 1)))
+        
     return data_merged, chop
     
     # end downstream_merge
@@ -606,11 +651,13 @@ def downstream_merge(data_merged, chop, thresh):
 
 def merge_all(rch, data, chop):
 
+    # function start time
+    objFunStartTime = time.time()
+    
     # keep track of function calls
     global intCounter_fun_merge_all
+    global intTotalTime_fun_merge_all
     intCounter_fun_merge_all += 1
-    if int(intCounter_fun_merge_all / 1000) == intCounter_fun_merge_all / 1000:
-        print('------> Merge All Function Called: {0:,} Times'.format(intCounter_fun_merge_all))
     
     """
     Merge all segments in a reach
@@ -641,6 +688,13 @@ def merge_all(rch, data, chop):
     # update "chop" list with merged-out segment IDs
     chop.extend(list(to_merge.iloc[:-1, :].index))
 
+    # add the time taken to the cumulative time
+    intTotalTime_fun_merge_all += time.time() - objFunStartTime
+    
+    # let the user know at increments
+    if int(intCounter_fun_merge_all / 5000) == intCounter_fun_merge_all / 5000:
+        print('------------> Function: Merge All called: {:,} times for a total of {:,} minutes'.format(intCounter_fun_merge_all, round(intTotalTime_fun_merge_all / 60, 1)))
+        
     return data_merged, chop
     
     # end merge_all
@@ -648,8 +702,12 @@ def merge_all(rch, data, chop):
 
 def update_network_data(data, rch, data_merged, chop, rconn):
 
+    # function start time
+    objFunStartTime = time.time()
+    
     # keep track of network data
     global intCounter_fun_update_network_data
+    global intTotalTime_fun_update_network_data
     intCounter_fun_update_network_data += 1
     if int(intCounter_fun_update_network_data / 1000) == intCounter_fun_update_network_data / 1000:
         print('-------> Update Network Data Function Called: {0:,} Times'.format(intCounter_fun_update_network_data))
@@ -678,6 +736,13 @@ def update_network_data(data, rch, data_merged, chop, rconn):
         data.loc[upstreams, "to"] = data_merged.head(1).index.values[
             0
         ]  # index of NEW reach head
+        
+    # add the time taken to the cumulative time
+    intTotalTime_fun_update_network_data += time.time() - objFunStartTime
+    
+    # let the user know at increments
+    if int(intCounter_fun_update_network_data / 5000) == intCounter_fun_update_network_data / 5000:
+        print('--------------> Function: Update Network Data called: {:,} times for a total of {:,} minutes'.format(intCounter_fun_update_network_data, round(intTotalTime_fun_update_network_data / 60, 1)))
 
     return data
     
@@ -877,35 +942,69 @@ def main():
     objRunDetailsTextFile = open(os.path.join(dir_path, filename_rundetails),'w')
     objRunDetailsTextFile.writelines('Text file with simple details of the code run...\n\n')
     
-    # set up some counters for number of times functions called
+    
+    # set up some counters for number of times functions called, etc
+    
+    timPuningHeadwaters = None
+    timSnapJunctions = None
+    timSegmentsMerge = None
+    
     global intCounter_fun_get_network_data
-    global intCounter_fun_network_connections
-    global intCounter_fun_build_reaches
-    global intCounter_fun_prune_headwaters
-    global intCounter_fun_snap_junctions
-    global intCounter_fun_len_weighted_av
-    global intCounter_fun_merge_parameters
-    global intCounter_fun_correct_reach_connections
-    global intCounter_fun_upstream_merge
-    global intCounter_fun_downstream_merge
-    global intCounter_fun_merge_all
-    global intCounter_fun_update_network_data
-    global intCounter_fun_qlat_destination_compute
-    global intCounter_fun_segment_merge
     intCounter_fun_get_network_data = 0
+    
+    global intCounter_fun_network_connections
     intCounter_fun_network_connections = 0
+    
+    global intCounter_fun_build_reaches
     intCounter_fun_build_reaches = 0
+    
+    global intCounter_fun_prune_headwaters
     intCounter_fun_prune_headwaters = 0
+    
+    global intCounter_fun_snap_junctions
     intCounter_fun_snap_junctions = 0
+    
+    global intCounter_fun_len_weighted_av
     intCounter_fun_len_weighted_av = 0
+    global intTotalTime_fun_len_weighted_av
+    intTotalTime_fun_len_weighted_av = 0  # seconds
+    
+    global intCounter_fun_merge_parameters
     intCounter_fun_merge_parameters = 0
+    global intTotalTime_fun_merge_parameters
+    intTotalTime_fun_merge_parameters = 0  # seconds
+    
+    global intCounter_fun_correct_reach_connections
     intCounter_fun_correct_reach_connections = 0
+    global intTotalTime_fun_correct_reach_connections
+    intTotalTime_fun_correct_reach_connections = 0
+    
+    global intCounter_fun_upstream_merge
     intCounter_fun_upstream_merge = 0
+    global intTotalTime_fun_upstream_merge
+    intTotalTime_fun_upstream_merge = 0  # seconds
+    
+    global intCounter_fun_downstream_merge
     intCounter_fun_downstream_merge = 0
+    global intTotalTime_fun_downstream_merge
+    intTotalTime_fun_downstream_merge = 0  # seconds
+    
+    global intCounter_fun_merge_all
     intCounter_fun_merge_all = 0
+    global intTotalTime_fun_merge_all
+    intTotalTime_fun_merge_all = 0  # seconds
+    
+    global intCounter_fun_update_network_data
     intCounter_fun_update_network_data = 0
+    global intTotalTime_fun_update_network_data
+    intTotalTime_fun_update_network_data = 0
+    
+    global intCounter_fun_qlat_destination_compute
     intCounter_fun_qlat_destination_compute = 0
+    
+    global intCounter_fun_segment_merge
     intCounter_fun_segment_merge = 0
+    
     
     # show some initial details
     funWriteToScreenAndTextFile('=========')
@@ -960,7 +1059,8 @@ def main():
         objTimeStartSection = time.time()  # record the start time, for this part of the code
         data_pruned = prune_headwaters(data, threshold, network_data)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
-        funWriteToScreenAndTextFile('--> took {} [HH:MM:SS.SS] to prune the headwaters'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
+        timPuningHeadwaters = funHmsString(objTimeEndSection - objTimeStartSection)
+        funWriteToScreenAndTextFile('--> Pruning the headwaters took {} [HH:MM:SS.SS]'.format(timPuningHeadwaters))
         funWriteToScreenAndTextFile('\n')
 
         # identify pruned segments
@@ -971,7 +1071,8 @@ def main():
         objTimeStartSection = time.time()  # record the start time, for this part of the code
         data_snapped = snap_junctions(data_pruned, threshold, network_data)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
-        funWriteToScreenAndTextFile('--> it took {} [HH:MM:SS.SS] to snap the junctions'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
+        timSnapJunctions = funHmsString(objTimeEndSection - objTimeStartSection)
+        funWriteToScreenAndTextFile('--> Snapping Junctions took {} [HH:MM:SS.SS]'.format(timSnapJunctions))
         funWriteToScreenAndTextFile('\n')
 
         funWriteToScreenAndTextFile('---')
@@ -979,7 +1080,8 @@ def main():
         objTimeStartSection = time.time()  # record the start time, for this part of the code
         data_merged, qlat_destinations = segment_merge(data, data_snapped, network_data, threshold, pruned_segs)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
-        funWriteToScreenAndTextFile('--> it took {} [HH:MM:SS.SS] to merge the segments'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
+        timSegmentsMerge = funHmsString(objTimeEndSection - objTimeStartSection)
+        funWriteToScreenAndTextFile('--> Segment merging took {} [HH:MM:SS.SS]'.format(timSegmentsMerge))
         funWriteToScreenAndTextFile('\n')
 
 
@@ -1000,7 +1102,8 @@ def main():
         objTimeStartSection = time.time()  # record the start time, for this part of the code
         data_snapped = snap_junctions(data, threshold, network_data)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
-        funWriteToScreenAndTextFile('--> it took {} [HH:MM:SS.SS] to snap the junctions'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
+        timSnapJunctions = funHmsString(objTimeEndSection - objTimeStartSection)
+        funWriteToScreenAndTextFile('--> Snapping Junctions took {} [HH:MM:SS.SS]'.format(timSnapJunctions))
         funWriteToScreenAndTextFile('\n')
 
         funWriteToScreenAndTextFile('---')
@@ -1008,7 +1111,8 @@ def main():
         objTimeStartSection = time.time()  # record the start time, for this part of the code
         data_merged, qlat_destinations = segment_merge(data, data_snapped, network_data, threshold, pruned_segs)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
-        funWriteToScreenAndTextFile('--> it took {} [HH:MM:SS.SS] to merge the segments'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
+        timSegmentsMerge = funHmsString(objTimeEndSection - objTimeStartSection)
+        funWriteToScreenAndTextFile('--> Segment merging took {} [HH:MM:SS.SS]'.format(timSegmentsMerge))
         funWriteToScreenAndTextFile('\n')
 
 
@@ -1029,7 +1133,8 @@ def main():
         objTimeStartSection = time.time()  # record the start time, for this part of the code
         data_snapped = snap_junctions(data, threshold, network_data)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
-        funWriteToScreenAndTextFile('--> it took {} [HH:MM:SS.SS] to snap the junctions'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
+        timSnapJunctions = funHmsString(objTimeEndSection - objTimeStartSection)
+        funWriteToScreenAndTextFile('--> Snapping Junctions took {} [HH:MM:SS.SS]'.format(timSnapJunctions))
         funWriteToScreenAndTextFile('\n')
 
         funWriteToScreenAndTextFile('---')
@@ -1037,7 +1142,8 @@ def main():
         objTimeStartSection = time.time()  # record the start time, for this part of the code
         data_merged, qlat_destinations = segment_merge(data, data_snapped, network_data, threshold, pruned_segs)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
-        funWriteToScreenAndTextFile('--> it took {} [HH:MM:SS.SS] to merge the segments'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
+        timSegmentsMerge = funHmsString(objTimeEndSection - objTimeStartSection)
+        funWriteToScreenAndTextFile('--> Segment merging took {} [HH:MM:SS.SS]'.format(timSegmentsMerge))
         funWriteToScreenAndTextFile('\n')
 
 
@@ -1056,7 +1162,8 @@ def main():
         funWriteToScreenAndTextFile("merging segments...")
         data_merged, qlat_destinations = segment_merge(data, data, network_data, threshold, pruned_segs)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
-        funWriteToScreenAndTextFile('--> it took {} [HH:MM:SS.SS] to merge the segments'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
+        timSegmentsMerge = funHmsString(objTimeEndSection - objTimeStartSection)
+        funWriteToScreenAndTextFile('--> Segment merging took {} [HH:MM:SS.SS]'.format(timSegmentsMerge))
         funWriteToScreenAndTextFile('\n')
 
 
@@ -1126,20 +1233,24 @@ def main():
     
     # record of function call counts
     funWriteToScreenAndTextFile('---------')
-    funWriteToScreenAndTextFile('COUNT OF FUNCTION CALLS TOTAL:')
-    # funWriteToScreenAndTextFile('Function <_fun_handle_args> Called:          {:,}'.format(intCounter_fun_handle_args))
+    funWriteToScreenAndTextFile('COUNT OF FUNCTION CALLS TOTAL / TIMES:')
+    funWriteToScreenAndTextFile('--')
+    funWriteToScreenAndTextFile('Function: <prune_headwaters> [HH:MM:SS.SS]   {}'.format(timPuningHeadwaters))
+    funWriteToScreenAndTextFile('Function: <snap_junctions>   [HH:MM:SS.SS]   {}'.format(timSnapJunctions))
+    funWriteToScreenAndTextFile('Function: <segment_merge>    [HH:MM:SS.SS]   {}'.format(timSegmentsMerge))
+    funWriteToScreenAndTextFile('--')
     funWriteToScreenAndTextFile('Function <get_network_data> Called:          {:,}'.format(intCounter_fun_get_network_data))
     funWriteToScreenAndTextFile('Function <network_connections> Called:       {:,}'.format(intCounter_fun_network_connections))
     funWriteToScreenAndTextFile('Function <build_reaches> Called:             {:,}'.format(intCounter_fun_build_reaches))
     funWriteToScreenAndTextFile('Function <prune_headwaters> Called:          {:,}'.format(intCounter_fun_prune_headwaters))
     funWriteToScreenAndTextFile('Function <snap_junctions> Called:            {:,}'.format(intCounter_fun_snap_junctions))
-    funWriteToScreenAndTextFile('Function <len_weighted_av> Called:           {:,}'.format(intCounter_fun_len_weighted_av))
-    funWriteToScreenAndTextFile('Function <merge_parameters> Called:          {:,}'.format(intCounter_fun_merge_parameters))
-    funWriteToScreenAndTextFile('Function <correct_reach_connections> Called: {:,}'.format(intCounter_fun_correct_reach_connections))
-    funWriteToScreenAndTextFile('Function <upstream_merge> Called:            {:,}'.format(intCounter_fun_upstream_merge))
-    funWriteToScreenAndTextFile('Function <downstream_all> Called:            {:,}'.format(intCounter_fun_downstream_merge))
-    funWriteToScreenAndTextFile('Function <merge_all> Called:                 {:,}'.format(intCounter_fun_merge_all))
-    funWriteToScreenAndTextFile('Function <update_network_data> Called:       {:,}'.format(intCounter_fun_update_network_data))
+    funWriteToScreenAndTextFile('Function <len_weighted_av> Called:           {:,} (for {:,} minutes total)'.format(intCounter_fun_len_weighted_av, round(intTotalTime_fun_len_weighted_av / 60, 1)))
+    funWriteToScreenAndTextFile('Function <merge_parameters> Called:          {:,} (for {:,} minutes total)'.format(intCounter_fun_merge_parameters, round(intTotalTime_fun_merge_parameters / 60, 1)))
+    funWriteToScreenAndTextFile('Function <correct_reach_connections> Called: {:,} (for {:,} minutes total)'.format(intCounter_fun_correct_reach_connections, round(intTotalTime_fun_correct_reach_connections / 60, 1)))
+    funWriteToScreenAndTextFile('Function <upstream_merge> Called:            {:,} (for {:,} minutes total)'.format(intCounter_fun_upstream_merge, round(intTotalTime_fun_upstream_merge / 60, 1)))
+    funWriteToScreenAndTextFile('Function <downstream_merge> Called:          {:,} (for {:,} minutes total)'.format(intCounter_fun_downstream_merge, round(intTotalTime_fun_downstream_merge / 60, 1)))
+    funWriteToScreenAndTextFile('Function <merge_all> Called:                 {:,} (for {:,} minutes total)'.format(intCounter_fun_merge_all, round(intTotalTime_fun_merge_all / 60, 1)))
+    funWriteToScreenAndTextFile('Function <update_network_data> Called:       {:,} (for {:,} minutes total)'.format(intCounter_fun_update_network_data, round(intTotalTime_fun_update_network_data / 60, 1)))
     funWriteToScreenAndTextFile('Function <qlat_destination_compute> Called:  {:,}'.format(intCounter_fun_qlat_destination_compute))
     funWriteToScreenAndTextFile('Function <segment_merge> Called:             {:,}'.format(intCounter_fun_segment_merge))
     funWriteToScreenAndTextFile('\n')

@@ -1,0 +1,19 @@
+Text file with simple details of the code run...
+
+=========
+CODE STARTING
+---------
+Script:                nhd_network_augment.py
+Last Edit Date:        01/27/21 - GJC_Development Branch
+---------
+Time ALL Code Started: Fri Jan 29 14:35:03 2021
+Arguments:             Namespace(prune=True, return_original=True, snap=True, supernetwork='CONUS_Named_Streams', threshold=250)
+Supernetwork:          CONUS_Named_Streams
+Threshold (m):         250
+Prune:                 True
+Snap:                  True
+Return Original:       True
+
+
+---------
+Extracting and organizing supernetwork data...

@@ -6,9 +6,10 @@ CODE STARTING
 Script:                nhd_network_augment.py
 Last Edit Date:        01/27/21 - GJC_Development Branch
 ---------
-Time ALL Code Started: Wed Jan 27 23:17:42 2021
+Time ALL Code Started: Thu Jan 28 20:47:21 2021
+Arguments:             Namespace(prune=True, return_original=True, snap=True, supernetwork='Florence_FULL_RES', threshold=250)
 Supernetwork:          Florence_FULL_RES
-Threshold:             250
+Threshold (m):         250
 Prune:                 True
 Snap:                  True
 Return Original:       True
@@ -24,7 +25,7 @@ Prune, snap, then merge:
 pruning headwaters...
 completed 1 iterations of headwater pruning
 no more short headwaters to prune
---> took 0:00:00.30 [HH:MM:SS.SS] to prune the headwaters
+--> Pruning the headwaters took 0:00:00.26 [HH:MM:SS.SS]
 
 
 ---
@@ -33,38 +34,43 @@ finding non-headwater reaches
 Prior to itteration 1, 25 short reaches existed in the network
 finding non-headwater reaches
 After iteration 1, 0 short reaches remain
---> it took 0:00:00.29 [HH:MM:SS.SS] to snap the junctions
+--> Snapping Junctions took 0:00:00.25 [HH:MM:SS.SS]
 
 
 ---
 merging segments...
---> it took 0:00:04.78 [HH:MM:SS.SS] to merge the segments
+--> Segment merging took 0:00:04.52 [HH:MM:SS.SS]
 
 
 ---------
 Exporting RouteLink file: RouteLink_Florence_FULL_RES_250m_prune_snap_merge.shp to C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels
 Exporting CrossWalk file: CrossWalk_Florence_FULL_RES_250m_prune_snap_merge.json to C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels
 Exporting unmodified RouteLink file: RouteLink_Florence_FULL_RES.shp to C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels
---> it took 0:00:00.73 [HH:MM:SS.SS] to export the datasets
+--> it took 0:00:00.78 [HH:MM:SS.SS] to export the datasets
 
 
-Time ALL Code Finished: Wed Jan 27 23:17:49 2021
+Time ALL Code Finished: Thu Jan 28 20:47:28 2021
 
 
 ---------
-COUNT OF FUNCTION CALLS TOTAL:
+COUNT OF FUNCTION CALLS TOTAL / TIMES:
+--
+Function: <prune_headwaters> [HH:MM:SS.SS]   0:00:00.26
+Function: <snap_junctions>   [HH:MM:SS.SS]   0:00:00.25
+Function: <segment_merge>    [HH:MM:SS.SS]   0:00:04.52
+--
 Function <get_network_data> Called:          1
 Function <network_connections> Called:       5
 Function <build_reaches> Called:             5
 Function <prune_headwaters> Called:          1
 Function <snap_junctions> Called:            1
-Function <len_weighted_av> Called:           2,223
-Function <merge_parameters> Called:          247
-Function <correct_reach_connections> Called: 225
-Function <upstream_merge> Called:            77
-Function <downstream_all> Called:            170
-Function <merge_all> Called:                 0
-Function <update_network_data> Called:       225
+Function <len_weighted_av> Called:           2,223 (for 0.0 minutes total)
+Function <merge_parameters> Called:          247 (for 0.0 minutes total)
+Function <correct_reach_connections> Called: 225 (for 0.0 minutes total)
+Function <upstream_merge> Called:            77 (for 0.0 minutes total)
+Function <downstream_merge> Called:          170 (for 0.0 minutes total)
+Function <merge_all> Called:                 0 (for 0.0 minutes total)
+Function <update_network_data> Called:       225 (for 0.0 minutes total)
 Function <qlat_destination_compute> Called:  1
 Function <segment_merge> Called:             1
 
@@ -77,7 +83,7 @@ Number of segments in modified RouteLink: 842
 
 
 ---------
-OVERALL: It took 0:00:07.68 [HH:MM:SS.SS] (total) to execute ALL of this code
+OVERALL: It took 0:00:07.17 [HH:MM:SS.SS] (total) to execute ALL of this code
 ---------
 Run Details Text File: RunDetails_Florence_FULL_RES_250m_prune_snap_merge.txt
 ---------

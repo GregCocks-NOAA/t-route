@@ -6,10 +6,10 @@ CODE STARTING
 Script:                nhd_network_augment.py
 Last Edit Date:        01/27/21 - GJC_Development Branch
 ---------
-Time ALL Code Started: Wed Jan 27 23:36:00 2021
+Time ALL Code Started: Thu Jan 28 20:35:19 2021
 Arguments:             Namespace(prune=True, return_original=True, snap=True, supernetwork='Mainstems_CONUS', threshold=250)
 Supernetwork:          Mainstems_CONUS
-Threshold:             250
+Threshold (m):         250
 Prune:                 True
 Snap:                  True
 Return Original:       True
@@ -25,7 +25,7 @@ Prune, snap, then merge:
 pruning headwaters...
 completed 1 iterations of headwater pruning
 no more short headwaters to prune
---> took 0:00:02.27 [HH:MM:SS.SS] to prune the headwaters
+--> Pruning the headwaters took 0:00:02.13 [HH:MM:SS.SS]
 
 
 ---
@@ -34,38 +34,43 @@ finding non-headwater reaches
 Prior to itteration 1, 3 short reaches existed in the network
 finding non-headwater reaches
 After iteration 1, 0 short reaches remain
---> it took 0:00:02.15 [HH:MM:SS.SS] to snap the junctions
+--> Snapping Junctions took 0:00:01.86 [HH:MM:SS.SS]
 
 
 ---
 merging segments...
---> it took 0:04:59.01 [HH:MM:SS.SS] to merge the segments
+--> Segment merging took 0:04:21.32 [HH:MM:SS.SS]
 
 
 ---------
 Exporting RouteLink file: RouteLink_Mainstems_CONUS_250m_prune_snap_merge.shp to C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels
 Exporting CrossWalk file: CrossWalk_Mainstems_CONUS_250m_prune_snap_merge.json to C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels
 Exporting unmodified RouteLink file: RouteLink_Mainstems_CONUS.shp to C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels
---> it took 0:01:04.03 [HH:MM:SS.SS] to export the datasets
+--> it took 0:00:53.67 [HH:MM:SS.SS] to export the datasets
 
 
-Time ALL Code Finished: Wed Jan 27 23:42:09 2021
+Time ALL Code Finished: Thu Jan 28 20:40:39 2021
 
 
 ---------
-COUNT OF FUNCTION CALLS TOTAL:
+COUNT OF FUNCTION CALLS TOTAL / TIMES:
+--
+Function: <prune_headwaters> [HH:MM:SS.SS]   0:00:02.13
+Function: <snap_junctions>   [HH:MM:SS.SS]   0:00:01.86
+Function: <segment_merge>    [HH:MM:SS.SS]   0:04:21.32
+--
 Function <get_network_data> Called:          1
 Function <network_connections> Called:       5
 Function <build_reaches> Called:             5
 Function <prune_headwaters> Called:          1
 Function <snap_junctions> Called:            1
-Function <len_weighted_av> Called:           155,268
-Function <merge_parameters> Called:          17,252
-Function <correct_reach_connections> Called: 2,068
-Function <upstream_merge> Called:            681
-Function <downstream_all> Called:            16,571
-Function <merge_all> Called:                 0
-Function <update_network_data> Called:       2,068
+Function <len_weighted_av> Called:           155,268 (for 0.8 minutes total)
+Function <merge_parameters> Called:          17,252 (for 1.7 minutes total)
+Function <correct_reach_connections> Called: 2,068 (for 0.3 minutes total)
+Function <upstream_merge> Called:            681 (for 0.1 minutes total)
+Function <downstream_merge> Called:          16,571 (for 3.2 minutes total)
+Function <merge_all> Called:                 0 (for 0.0 minutes total)
+Function <update_network_data> Called:       2,068 (for 0.6 minutes total)
 Function <qlat_destination_compute> Called:  1
 Function <segment_merge> Called:             1
 
@@ -78,7 +83,7 @@ Number of segments in modified RouteLink: 91967
 
 
 ---------
-OVERALL: It took 0:06:09.16 [HH:MM:SS.SS] (total) to execute ALL of this code
+OVERALL: It took 0:05:20.52 [HH:MM:SS.SS] (total) to execute ALL of this code
 ---------
 Run Details Text File: RunDetails_Mainstems_CONUS_250m_prune_snap_merge.txt
 ---------

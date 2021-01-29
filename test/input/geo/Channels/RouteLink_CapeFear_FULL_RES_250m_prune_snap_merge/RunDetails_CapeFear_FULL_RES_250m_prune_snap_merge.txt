@@ -1,0 +1,102 @@
+Text file with simple details of the code run...
+
+=========
+CODE STARTING
+---------
+Script:                nhd_network_augment.py
+Last Edit Date:        01/27/21 - GJC_Development Branch
+---------
+Time ALL Code Started: Thu Jan 28 20:42:52 2021
+Arguments:             Namespace(prune=True, return_original=True, snap=True, supernetwork='CapeFear_FULL_RES', threshold=250)
+Supernetwork:          CapeFear_FULL_RES
+Threshold (m):         250
+Prune:                 True
+Snap:                  True
+Return Original:       True
+
+
+---------
+Extracting and organizing supernetwork data...
+
+
+---------
+Prune, snap, then merge:
+---
+pruning headwaters...
+completed 1 iterations of headwater pruning
+completed 2 iterations of headwater pruning
+no more short headwaters to prune
+--> Pruning the headwaters took 0:00:05.75 [HH:MM:SS.SS]
+
+
+---
+snapping junctions...
+finding non-headwater reaches
+Prior to itteration 1, 463 short reaches existed in the network
+finding non-headwater reaches
+After iteration 1, 46 short reaches remain
+finding non-headwater reaches
+After iteration 2, 5 short reaches remain
+finding non-headwater reaches
+After iteration 3, 1 short reaches remain
+finding non-headwater reaches
+After iteration 4, 1 short reaches remain
+finding non-headwater reaches
+After iteration 5, 1 short reaches remain
+finding non-headwater reaches
+After iteration 6, 0 short reaches remain
+--> Snapping Junctions took 0:00:11.49 [HH:MM:SS.SS]
+
+
+---
+merging segments...
+--> Segment merging took 0:00:53.89 [HH:MM:SS.SS]
+
+
+---------
+Exporting RouteLink file: RouteLink_CapeFear_FULL_RES_250m_prune_snap_merge.shp to C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels
+Exporting CrossWalk file: CrossWalk_CapeFear_FULL_RES_250m_prune_snap_merge.json to C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels
+Exporting unmodified RouteLink file: RouteLink_CapeFear_FULL_RES.shp to C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels
+--> it took 0:00:07.86 [HH:MM:SS.SS] to export the datasets
+
+
+Time ALL Code Finished: Thu Jan 28 20:44:12 2021
+
+
+---------
+COUNT OF FUNCTION CALLS TOTAL / TIMES:
+--
+Function: <prune_headwaters> [HH:MM:SS.SS]   0:00:05.75
+Function: <snap_junctions>   [HH:MM:SS.SS]   0:00:11.49
+Function: <segment_merge>    [HH:MM:SS.SS]   0:00:53.89
+--
+Function <get_network_data> Called:          1
+Function <network_connections> Called:       11
+Function <build_reaches> Called:             11
+Function <prune_headwaters> Called:          1
+Function <snap_junctions> Called:            1
+Function <len_weighted_av> Called:           25,182 (for 0.1 minutes total)
+Function <merge_parameters> Called:          2,798 (for 0.3 minutes total)
+Function <correct_reach_connections> Called: 2,145 (for 0.0 minutes total)
+Function <upstream_merge> Called:            1,241 (for 0.2 minutes total)
+Function <downstream_merge> Called:          1,557 (for 0.3 minutes total)
+Function <merge_all> Called:                 0 (for 0.0 minutes total)
+Function <update_network_data> Called:       2,145 (for 0.2 minutes total)
+Function <qlat_destination_compute> Called:  1
+Function <segment_merge> Called:             1
+
+
+---------
+RESULTS SUMMARY:
+---------
+Number of segments in original RouteLink: 15210
+Number of segments in modified RouteLink: 12098
+
+
+---------
+OVERALL: It took 0:01:20.49 [HH:MM:SS.SS] (total) to execute ALL of this code
+---------
+Run Details Text File: RunDetails_CapeFear_FULL_RES_250m_prune_snap_merge.txt
+---------
+CODE FINISHED
+=========
