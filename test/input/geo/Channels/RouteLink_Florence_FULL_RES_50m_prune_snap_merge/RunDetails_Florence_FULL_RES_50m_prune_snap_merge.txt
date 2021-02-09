@@ -1,17 +1,18 @@
-Text file with simple details of the code run...
-
 =========
 CODE STARTING
+
+
 ---------
-Script:                nhd_network_augment.py
-Last Edit Date:        01/27/21 - GJC_Development Branch
+Script:                 nhd_network_augment.py (alpha solution with tweaks)
+Last Edit Date:         02/09/21 - GJC_Development Branch
 ---------
-Time ALL Code Started: Wed Jan 27 22:57:36 2021
-Supernetwork:          Florence_FULL_RES
-Threshold:             50
-Prune:                 True
-Snap:                  True
-Return Original:       True
+Time ALL Code Started:  Tue Feb  9 12:33:24 2021
+Arguments:              Namespace(prune=True, return_original=True, snap=True, supernetwork='Florence_FULL_RES', threshold=50)
+Supernetwork:           Florence_FULL_RES
+Threshold (m):          50
+Prune:                  True
+Snap:                   True
+Return Original:        True
 
 
 ---------
@@ -24,62 +25,80 @@ Prune, snap, then merge:
 pruning headwaters...
 completed 1 iterations of headwater pruning
 no more short headwaters to prune
---> took 0:00:00.29 [HH:MM:SS.SS] to prune the headwaters
+**** Pruning the headwaters took 0:00:00.27 [HH:MM:SS.SS] ****
 
 
 ---
 snapping junctions...
 finding non-headwater reaches
-Prior to itteration 1, 1 short reaches existed in the network
+Prior to iteration 1, 1 short reaches existed in the network
 finding non-headwater reaches
 After iteration 1, 0 short reaches remain
---> it took 0:00:00.28 [HH:MM:SS.SS] to snap the junctions
+**** Snapping Junctions took 0:00:00.26 [HH:MM:SS.SS] ****
 
 
 ---
 merging segments...
---> it took 0:00:01.09 [HH:MM:SS.SS] to merge the segments
+**** Segment merging took 0:00:01.00 [HH:MM:SS.SS] ****
 
 
 ---------
-Exporting RouteLink file: RouteLink_Florence_FULL_RES_50m_prune_snap_merge.shp to C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels
-Exporting CrossWalk file: CrossWalk_Florence_FULL_RES_50m_prune_snap_merge.json to C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels
-Exporting unmodified RouteLink file: RouteLink_Florence_FULL_RES.shp to C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels
---> it took 0:00:00.80 [HH:MM:SS.SS] ro export the datasets
-
-
-Time ALL Code Finished: Wed Jan 27 22:57:40 2021
+EXPORTING VARIOUS FILES TO: C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Florence_FULL_RES_50m_prune_snap_merge
+--
+1) Exporting RouteLink file as SHP 'file':             C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Florence_FULL_RES_50m_prune_snap_merge\RouteLink_Florence_FULL_RES_50m_prune_snap_merge.shp
+2) Exporting CrossWalk file as JSON file:              C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Florence_FULL_RES_50m_prune_snap_merge\Crosswalk_Florence_FULL_RES_50m_prune_snap_merge.json
+3) Exporting original RouteLink file as a NetCDFfile:  C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Florence_FULL_RES_50m_prune_snap_merge\RouteLink_Florence_FULL_RES_50m_prune_snap_merge_original.nc
+4) Exporting edited RouteLink file as a NetCDFfile:    C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Florence_FULL_RES_50m_prune_snap_merge\RouteLink_Florence_FULL_RES_50m_prune_snap_merge_modified.nc
+5) Exporting unmodified RouteLink file as SHP 'file':  C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Florence_FULL_RES_50m_prune_snap_merge\RouteLink_Florence_FULL_RES_50m_prune_snap_merge.shp
+--
+**** it took 0:00:00.86 [HH:MM:SS.SS] to export the various datasets ****
 
 
 ---------
-COUNT OF FUNCTION CALLS TOTAL:
-Function <get_network_data> Called:          1
-Function <network_connections> Called:       5
-Function <build_reaches> Called:             5
-Function <prune_headwaters> Called:          1
-Function <snap_junctions> Called:            1
-Function <len_weighted_av> Called:           207
-Function <merge_parameters> Called:          23
-Function <correct_reach_connections> Called: 22
-Function <upstream_merge> Called:            12
-Function <downstream_all> Called:            11
-Function <merge_all> Called:                 0
-Function <update_network_data> Called:       22
-Function <qlat_destination_compute> Called:  1
-Function <segment_merge> Called:             1
+Time ALL Code Finished: Tue Feb  9 12:33:28 2021
+
+
+**********
+COUNT OF FUNCTION CALLS TOTAL / TIMES:
+**********
+Function: <prune_headwaters> [HH:MM:SS.SS]   0:00:00.27
+Function: <snap_junctions>   [HH:MM:SS.SS]   0:00:00.26
+Function: <segment_merge>    [HH:MM:SS.SS]   0:00:01.00
+--
+Function <get_network_data> Called:                     1 time(s)
+Function <network_connections> Called:                  5 time(s)
+Function <build_reaches> Called:                        5 time(s)
+Function <prune_headwaters> Called:                     1 time(s)
+Function <snap_junctions> Called:                       1 time(s)
+Function <len_weighted_av> Called:                    207 time(s) @      0.0 minutes total
+Function <merge_parameters> Called:                    23 time(s) @      0.0 minutes total
+Function <correct_reach_connections> Called:           22 time(s) @      0.0 minutes total
+Function <upstream_merge> Called:                      12 time(s) @      0.0 minutes total
+Function <downstream_merge> Called:                    11 time(s) @      0.0 minutes total
+Function <merge_all> Called:                            0 time(s) @      0.0 minutes total
+Function <update_network_data> Called:                 22 time(s) @      0.0 minutes total
+Function <qlat_destination_compute> Called:             1 time(s)
+Function <segment_merge> Called:                        1 time(s)
+**********
 
 
 ---------
 RESULTS SUMMARY:
 ---------
-Number of segments in original RouteLink: 1107
-Number of segments in modified RouteLink: 1083
 
 
----------
-OVERALL: It took 0:00:03.95 [HH:MM:SS.SS] (total) to execute ALL of this code
----------
+Number of segments (as points) in original RouteLink:      1,107
+Number of segments (as points) in modified RouteLink:      1,083
+
+
+OVERALL: It took 0:00:03.77 [HH:MM:SS.SS] (total) to execute ALL of this code
+
+
 Run Details Text File: RunDetails_Florence_FULL_RES_50m_prune_snap_merge.txt
+
+
 ---------
+
+
 CODE FINISHED
 =========

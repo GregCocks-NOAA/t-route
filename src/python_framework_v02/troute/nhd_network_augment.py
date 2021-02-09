@@ -13,6 +13,8 @@ from tqdm import tqdm
 import time
 import datetime
 import statistics
+import netCDF4 as nc
+import fsspec
 
 root = pathlib.Path("../../../").resolve()
 sys.path.append(os.path.join(root, "src", "python_framework_v01"))
@@ -29,8 +31,7 @@ def funWriteToScreenAndTextFile(strMessage):
     print(strMessage)
     
     # add (appropiate) messages to the run details text file
-    if strMessage[0:10] != ('• function'):
-        objRunDetailsTextFile.writelines('{}\n'.format(strMessage))
+    objRunDetailsTextFile.writelines('{}\n'.format(strMessage))
     
     # end funWriteToScreenAndTextFile
 
@@ -95,9 +96,9 @@ def _handle_args():
     parser.add_argument(
         "-return_original",
         "--return_original",
-        help="return an unmodified RouteLink.nc file for the specified domain",
-        dest="return_original",
-        action="store_true",
+        help = "return an unmodified RouteLink.nc file for the specified domain",
+        dest = "return_original",
+        action = "store_true",
     )
 
     return parser.parse_args()
@@ -384,7 +385,7 @@ def snap_junctions(data, threshold, network_data):
         if iter_num > 1:
             funWriteToScreenAndTextFile("After iteration {}, {} short reaches remain".format(iter_num - 1, len(short_reaches)))
         else:
-            funWriteToScreenAndTextFile("Prior to itteration {}, {} short reaches existed in the network".format(iter_num, len(short_reaches)))
+            funWriteToScreenAndTextFile("Prior to iteration {}, {} short reaches existed in the network".format(iter_num, len(short_reaches)))
 
         # check that short reaches exist, if none - terminate process
         if len(short_reaches) == 0:
@@ -459,7 +460,7 @@ def len_weighted_av(df, var, weight):
     
     # let the user know at increments
     if int(intCounter_fun_len_weighted_av / 25000) == intCounter_fun_len_weighted_av / 25000:
-        print('--> Function: Length Weighted Average called: {:,} times for a total of {:,} minutes'.format(intCounter_fun_len_weighted_av, round(intTotalTime_fun_len_weighted_av / 60, 1)))
+        funWriteToScreenAndTextFile('--> {}: Function - Length Weighted Average called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_len_weighted_av, round(intTotalTime_fun_len_weighted_av / 60, 1)))
         
     return x
     
@@ -507,7 +508,7 @@ def merge_parameters(to_merge):
     
     # let the user know at increments
     if int(intCounter_fun_merge_parameters / 5000) == intCounter_fun_merge_parameters / 5000:
-        print('----> Function: Merge Parameters called: {:,} times for a total of {:,} minutes'.format(intCounter_fun_merge_parameters, round(intTotalTime_fun_merge_parameters / 60, 1)))
+        funWriteToScreenAndTextFile('--> {}: Function - Merge Parameters called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_merge_parameters, round(intTotalTime_fun_merge_parameters / 60, 1)))
 
     return data_replace
     
@@ -541,7 +542,7 @@ def correct_reach_connections(data_merged):
     
     # let the user know at increments
     if int(intCounter_fun_correct_reach_connections / 5000) == intCounter_fun_correct_reach_connections / 5000:
-        print('------> Function: Correct Reach Connections called: {:,} times for a total of {:,} minutes'.format(intCounter_fun_correct_reach_connections, round(intTotalTime_fun_correct_reach_connections / 60, 1)))
+        funWriteToScreenAndTextFile('--> {}: Function - Correct Reach Connections called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_correct_reach_connections, round(intTotalTime_fun_correct_reach_connections / 60, 1)))
 
     return data_merged
     
@@ -588,7 +589,7 @@ def upstream_merge(data_merged, chop):
     
     # let the user know at increments
     if int(intCounter_fun_upstream_merge / 5000) == intCounter_fun_upstream_merge / 5000:
-        print('--------> Function: Upstream Merge called: {:,} times for a total of {:,} minutes'.format(intCounter_fun_upstream_merge, round(intTotalTime_fun_upstream_merge / 60, 1)))
+        funWriteToScreenAndTextFile('--> {}: Function - Upstream Merge called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_upstream_merge, round(intTotalTime_fun_upstream_merge / 60, 1)))
         
     return data_merged, chop
     
@@ -642,7 +643,7 @@ def downstream_merge(data_merged, chop, thresh):
     
     # let the user know at increments
     if int(intCounter_fun_downstream_merge / 5000) == intCounter_fun_downstream_merge / 5000:
-        print('----------> Function: Downstream Merge called: {:,} times for a total of {:,} minutes'.format(intCounter_fun_downstream_merge, round(intTotalTime_fun_downstream_merge / 60, 1)))
+        funWriteToScreenAndTextFile('--> {}: Function - Downstream Merge called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_downstream_merge, round(intTotalTime_fun_downstream_merge / 60, 1)))
         
     return data_merged, chop
     
@@ -693,7 +694,7 @@ def merge_all(rch, data, chop):
     
     # let the user know at increments
     if int(intCounter_fun_merge_all / 5000) == intCounter_fun_merge_all / 5000:
-        print('------------> Function: Merge All called: {:,} times for a total of {:,} minutes'.format(intCounter_fun_merge_all, round(intTotalTime_fun_merge_all / 60, 1)))
+        funWriteToScreenAndTextFile('--> {}: Function - Merge All called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_merge_all, round(intTotalTime_fun_merge_all / 60, 1)))
         
     return data_merged, chop
     
@@ -709,8 +710,6 @@ def update_network_data(data, rch, data_merged, chop, rconn):
     global intCounter_fun_update_network_data
     global intTotalTime_fun_update_network_data
     intCounter_fun_update_network_data += 1
-    if int(intCounter_fun_update_network_data / 1000) == intCounter_fun_update_network_data / 1000:
-        print('-------> Update Network Data Function Called: {0:,} Times'.format(intCounter_fun_update_network_data))
     
     """
     Update the network routing parameter data with merged segment data
@@ -741,8 +740,8 @@ def update_network_data(data, rch, data_merged, chop, rconn):
     intTotalTime_fun_update_network_data += time.time() - objFunStartTime
     
     # let the user know at increments
-    if int(intCounter_fun_update_network_data / 5000) == intCounter_fun_update_network_data / 5000:
-        print('--------------> Function: Update Network Data called: {:,} times for a total of {:,} minutes'.format(intCounter_fun_update_network_data, round(intTotalTime_fun_update_network_data / 60, 1)))
+    if int(intCounter_fun_update_network_data / 2000) == intCounter_fun_update_network_data / 2000:
+        funWriteToScreenAndTextFile('--> {}: Function - Update Network Data called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_update_network_data, round(intTotalTime_fun_update_network_data / 60, 1)))
 
     return data
     
@@ -940,8 +939,6 @@ def main():
         os.mkdir(dir_path)
     global objRunDetailsTextFile  # so it works in various functions
     objRunDetailsTextFile = open(os.path.join(dir_path, filename_rundetails),'w')
-    objRunDetailsTextFile.writelines('Text file with simple details of the code run...\n\n')
-    
     
     # set up some counters for number of times functions called, etc
     
@@ -1009,17 +1006,18 @@ def main():
     # show some initial details
     funWriteToScreenAndTextFile('=========')
     funWriteToScreenAndTextFile('CODE STARTING')
+    funWriteToScreenAndTextFile('\n')
     funWriteToScreenAndTextFile('---------')
-    funWriteToScreenAndTextFile('Script:                nhd_network_augment.py')
-    funWriteToScreenAndTextFile('Last Edit Date:        01/27/21 - GJC_Development Branch')
+    funWriteToScreenAndTextFile('Script:                 nhd_network_augment.py (alpha solution with tweaks)')
+    funWriteToScreenAndTextFile('Last Edit Date:         02/09/21 - GJC_Development Branch')
     funWriteToScreenAndTextFile('---------')
-    funWriteToScreenAndTextFile('Time ALL Code Started: {}'.format(strCurrentTime))
-    funWriteToScreenAndTextFile('Arguments:             {}'.format(args))
-    funWriteToScreenAndTextFile('Supernetwork:          {}'.format(supernetwork))
-    funWriteToScreenAndTextFile('Threshold (m):         {}'.format(threshold))
-    funWriteToScreenAndTextFile('Prune:                 {}'.format(prune))
-    funWriteToScreenAndTextFile('Snap:                  {}'.format(snap))
-    funWriteToScreenAndTextFile('Return Original:       {}'.format(return_original))
+    funWriteToScreenAndTextFile('Time ALL Code Started:  {}'.format(strCurrentTime))
+    funWriteToScreenAndTextFile('Arguments:              {}'.format(args))
+    funWriteToScreenAndTextFile('Supernetwork:           {}'.format(supernetwork))
+    funWriteToScreenAndTextFile('Threshold (m):          {}'.format(threshold))
+    funWriteToScreenAndTextFile('Prune:                  {}'.format(prune))
+    funWriteToScreenAndTextFile('Snap:                   {}'.format(snap))
+    funWriteToScreenAndTextFile('Return Original:        {}'.format(return_original))
     funWriteToScreenAndTextFile('\n')
 
 
@@ -1029,28 +1027,11 @@ def main():
     data, RouteLink, network_data = get_network_data(supernetwork)
     RouteLink = RouteLink.set_index(network_data["columns"]["key"])
     funWriteToScreenAndTextFile('\n')
-
+    
     pruned_segs = []
     # prune headwaters
     if prune and snap:
-        dirname = (
-            "RouteLink_" + supernetwork + "_" + str(threshold) + "m_prune_snap_merge"
-        )
-        filename = (
-            "RouteLink_"
-            + supernetwork
-            + "_"
-            + str(threshold)
-            + "m_prune_snap_merge.shp"
-        )
-        filename_cw = (
-            "CrossWalk_"
-            + supernetwork
-            + "_"
-            + str(threshold)
-            + "m_prune_snap_merge.json"
-        )
-
+        
         funWriteToScreenAndTextFile('---------')
         funWriteToScreenAndTextFile("Prune, snap, then merge:")
 
@@ -1060,7 +1041,7 @@ def main():
         data_pruned = prune_headwaters(data, threshold, network_data)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
         timPuningHeadwaters = funHmsString(objTimeEndSection - objTimeStartSection)
-        funWriteToScreenAndTextFile('--> Pruning the headwaters took {} [HH:MM:SS.SS]'.format(timPuningHeadwaters))
+        funWriteToScreenAndTextFile('**** Pruning the headwaters took {} [HH:MM:SS.SS] ****'.format(timPuningHeadwaters))
         funWriteToScreenAndTextFile('\n')
 
         # identify pruned segments
@@ -1072,7 +1053,7 @@ def main():
         data_snapped = snap_junctions(data_pruned, threshold, network_data)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
         timSnapJunctions = funHmsString(objTimeEndSection - objTimeStartSection)
-        funWriteToScreenAndTextFile('--> Snapping Junctions took {} [HH:MM:SS.SS]'.format(timSnapJunctions))
+        funWriteToScreenAndTextFile('**** Snapping Junctions took {} [HH:MM:SS.SS] ****'.format(timSnapJunctions))
         funWriteToScreenAndTextFile('\n')
 
         funWriteToScreenAndTextFile('---')
@@ -1081,21 +1062,15 @@ def main():
         data_merged, qlat_destinations = segment_merge(data, data_snapped, network_data, threshold, pruned_segs)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
         timSegmentsMerge = funHmsString(objTimeEndSection - objTimeStartSection)
-        funWriteToScreenAndTextFile('--> Segment merging took {} [HH:MM:SS.SS]'.format(timSegmentsMerge))
+        funWriteToScreenAndTextFile('**** Segment merging took {} [HH:MM:SS.SS] ****'.format(timSegmentsMerge))
         funWriteToScreenAndTextFile('\n')
 
 
     if snap and not prune:
-        dirname = "RouteLink_" + supernetwork + "_" + str(threshold) + "m_snap_merge"
-        filename = (
-            "RouteLink_" + supernetwork + "_" + str(threshold) + "m_snap_merge.shp"
-        )
-        filename_cw = (
-            "CrossWalk_" + supernetwork + "_" + str(threshold) + "m_snap_merge.json"
-        )
-
+        
         funWriteToScreenAndTextFile('---------')
         funWriteToScreenAndTextFile("Snap and merge:")
+        funWriteToScreenAndTextFile('\n')
 
         funWriteToScreenAndTextFile('---')
         funWriteToScreenAndTextFile("snapping junctions...")
@@ -1103,7 +1078,7 @@ def main():
         data_snapped = snap_junctions(data, threshold, network_data)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
         timSnapJunctions = funHmsString(objTimeEndSection - objTimeStartSection)
-        funWriteToScreenAndTextFile('--> Snapping Junctions took {} [HH:MM:SS.SS]'.format(timSnapJunctions))
+        funWriteToScreenAndTextFile('**** Snapping Junctions took {} [HH:MM:SS.SS] ****'.format(timSnapJunctions))
         funWriteToScreenAndTextFile('\n')
 
         funWriteToScreenAndTextFile('---')
@@ -1112,21 +1087,15 @@ def main():
         data_merged, qlat_destinations = segment_merge(data, data_snapped, network_data, threshold, pruned_segs)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
         timSegmentsMerge = funHmsString(objTimeEndSection - objTimeStartSection)
-        funWriteToScreenAndTextFile('--> Segment merging took {} [HH:MM:SS.SS]'.format(timSegmentsMerge))
+        funWriteToScreenAndTextFile('**** Segment merging took {} [HH:MM:SS.SS] ****'.format(timSegmentsMerge))
         funWriteToScreenAndTextFile('\n')
 
 
     if not snap and prune:
-        dirname = "RouteLink_" + supernetwork + "_" + str(threshold) + "m_prune_merge"
-        filename = (
-            "RouteLink_" + supernetwork + "_" + str(threshold) + "m_prune_merge.shp"
-        )
-        filename_cw = (
-            "CrossWalk_" + supernetwork + "_" + str(threshold) + "m_prune_merge.json"
-        )
-
+        
         funWriteToScreenAndTextFile('---------')
         funWriteToScreenAndTextFile("Prune and merge:")
+        funWriteToScreenAndTextFile('\n')
 
         funWriteToScreenAndTextFile('---')
         funWriteToScreenAndTextFile("snapping junctions...")
@@ -1134,7 +1103,7 @@ def main():
         data_snapped = snap_junctions(data, threshold, network_data)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
         timSnapJunctions = funHmsString(objTimeEndSection - objTimeStartSection)
-        funWriteToScreenAndTextFile('--> Snapping Junctions took {} [HH:MM:SS.SS]'.format(timSnapJunctions))
+        funWriteToScreenAndTextFile('**** Snapping Junctions took {} [HH:MM:SS.SS] ****'.format(timSnapJunctions))
         funWriteToScreenAndTextFile('\n')
 
         funWriteToScreenAndTextFile('---')
@@ -1143,19 +1112,15 @@ def main():
         data_merged, qlat_destinations = segment_merge(data, data_snapped, network_data, threshold, pruned_segs)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
         timSegmentsMerge = funHmsString(objTimeEndSection - objTimeStartSection)
-        funWriteToScreenAndTextFile('--> Segment merging took {} [HH:MM:SS.SS]'.format(timSegmentsMerge))
+        funWriteToScreenAndTextFile('**** Segment merging took {} [HH:MM:SS.SS] ****'.format(timSegmentsMerge))
         funWriteToScreenAndTextFile('\n')
 
 
     if not snap and not prune:
-        dirname = "RouteLink_" + supernetwork + "_" + str(threshold) + "m_merge"
-        filename = "RouteLink_" + supernetwork + "_" + str(threshold) + "m_merge.nc"
-        filename_cw = (
-            "CrossWalk_" + supernetwork + "_" + str(threshold) + "m_merge.json"
-        )
-
+        
         funWriteToScreenAndTextFile('---------')
         funWriteToScreenAndTextFile("Just merge:")
+        funWriteToScreenAndTextFile('\n')
 
         funWriteToScreenAndTextFile('---')
         objTimeStartSection = time.time()  # record the start time, for this part of the code
@@ -1163,13 +1128,14 @@ def main():
         data_merged, qlat_destinations = segment_merge(data, data, network_data, threshold, pruned_segs)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
         timSegmentsMerge = funHmsString(objTimeEndSection - objTimeStartSection)
-        funWriteToScreenAndTextFile('--> Segment merging took {} [HH:MM:SS.SS]'.format(timSegmentsMerge))
+        funWriteToScreenAndTextFile('**** Segment merging took {} [HH:MM:SS.SS]'.format(timSegmentsMerge))
         funWriteToScreenAndTextFile('\n')
 
 
-    # update RouteLink data
-    funWriteToScreenAndTextFile('---------')
+    # section - export various dataets
     objTimeStartSection = time.time()  # record the start time, for this part of the code
+    
+    # update RouteLink data
     RouteLink_edit = RouteLink.loc[data_merged.index.values]
 
     for (columnName, columnData) in data_merged.iteritems():
@@ -1178,99 +1144,119 @@ def main():
     for idx in RouteLink_edit.index:
         if RouteLink_edit.loc[idx, "to"] < 0:
             RouteLink_edit.loc[idx, "to"] = 0
+            
+    # convert RouteLink (edited) to geodataframe
+    RouteLink_edit = gpd.GeoDataFrame(RouteLink_edit, geometry=gpd.points_from_xy(RouteLink_edit.lon, RouteLink_edit.lat),)
 
-    # convert RouteLink to geodataframe
-    RouteLink_edit = gpd.GeoDataFrame(
-        RouteLink_edit,
-        geometry=gpd.points_from_xy(RouteLink_edit.lon, RouteLink_edit.lat),
-    )
-
-    # export merged data
-    funWriteToScreenAndTextFile("Exporting RouteLink file: {} to {}".format(filename, os.path.join(root, "test", "input", "geo", "Channels")))
-
+    # create RouteLink data (original)
+    dirname = "RouteLink_" + supernetwork
+    filename = "RouteLink_" + supernetwork + ".shp"
+    dir_path = os.path.join(root, "test", "input", "geo", "Channels", dirname)
+    if not os.path.isdir(dir_path):
+        os.mkdir(dir_path)
+    RouteLink_domain = RouteLink.loc[data.index.values]
+    RouteLink_domain = gpd.GeoDataFrame(RouteLink_domain, geometry=gpd.points_from_xy(RouteLink_domain.lon, RouteLink_domain.lat),)
+    
+    # create the file names, etc ready for export
+    dirname = 'RouteLink_{}_{}m_prune_snap_merge'.format(supernetwork, threshold)
+    filename = '{}.shp'.format(dirname)
+    filename_cw = 'Crosswalk_{}.json'.format(str(dirname[10:]))
+    filename_netcdf_modified = '{}_modified.nc'.format(str(dirname))
+    filename_netcdf_original = '{}_original.nc'.format(str(dirname))
     dir_path = os.path.join(root, "test", "input", "geo", "Channels", dirname)
     if not os.path.isdir(dir_path):
         os.mkdir(dir_path)
 
-    # save RouteLink data as shapefile
-    RouteLink_edit = RouteLink_edit.drop(columns=["time", "gages"])
-    RouteLink_edit.to_file(os.path.join(dir_path, filename))
+    # export merged data - shape file format
+    funWriteToScreenAndTextFile('---------')
+    funWriteToScreenAndTextFile('EXPORTING VARIOUS FILES TO: {}'.format(dir_path))
+    funWriteToScreenAndTextFile('--')
 
-    # save cross walk as json
-    funWriteToScreenAndTextFile("Exporting CrossWalk file: {} to {}".format(filename_cw, os.path.join(root, "test", "input", "geo", "Channels")))
     
+    # save RouteLink data (modified)
+    funWriteToScreenAndTextFile("1) Exporting RouteLink file as SHP 'file':             {}\{}".format(dir_path, filename))
+    RouteLink_edit_dropped_cols1 = RouteLink_edit.drop(columns=["time", "gages"])
+    RouteLink_edit_dropped_cols1.to_file(os.path.join(dir_path, filename))
+    
+    # export cross walk as json
+    funWriteToScreenAndTextFile("2) Exporting CrossWalk file as JSON file:              {}\{}".format(dir_path, filename_cw))
     with open(os.path.join(dir_path, filename_cw), "w") as outfile:
         json.dump(qlat_destinations, outfile)
+        
+    # export original RouteLink as a NetCDF file
+    funWriteToScreenAndTextFile("3) Exporting original RouteLink file as a NetCDFfile:  {}\{}".format(dir_path, filename_netcdf_original))
+    xrRouteLink_domain = RouteLink_domain.drop(columns=['geometry']).to_xarray()
+    objOriginalRouteLinkNetCDF = fsspec.open(os.path.join(dir_path, filename_netcdf_original), mode='wb')
+    xrRouteLink_domain.to_netcdf(objOriginalRouteLinkNetCDF, engine='netcdf4')
+    objOriginalRouteLinkNetCDF.close()
+
+    # export edited RouteLink as a NetCDF file
+    funWriteToScreenAndTextFile("4) Exporting edited RouteLink file as a NetCDFfile:    {}\{}".format(dir_path, filename_netcdf_modified))
+    xrRouteLink_edit = RouteLink_edit.drop(columns=['geometry']).to_xarray()
+    objModifiedRouteLinkNetCDF = fsspec.open(os.path.join(dir_path, filename_netcdf_modified), mode='wb')
+    xrRouteLink_edit.to_netcdf(objModifiedRouteLinkNetCDF, engine='netcdf4')
+    objModifiedRouteLinkNetCDF.close()
 
     # export original data
     if return_original:
-        dirname = "RouteLink_" + supernetwork
-        filename = "RouteLink_" + supernetwork + ".shp"
-        funWriteToScreenAndTextFile("Exporting unmodified RouteLink file: {} to {}".format(filename, os.path.join(root, "test", "input", "geo", "Channels")))
-
-        dir_path = os.path.join(root, "test", "input", "geo", "Channels", dirname)
-        if not os.path.isdir(dir_path):
-            os.mkdir(dir_path)
-
-        RouteLink_domain = RouteLink.loc[data.index.values]
-        RouteLink_domain = gpd.GeoDataFrame(
-            RouteLink_domain,
-            geometry=gpd.points_from_xy(RouteLink_domain.lon, RouteLink_domain.lat),
-        )
-
+        
+        funWriteToScreenAndTextFile("5) Exporting unmodified RouteLink file as SHP 'file':  {}\{}".format(dir_path, filename))
         RouteLink_domain = RouteLink_domain.drop(columns=["time", "gages"])
         RouteLink_domain.to_file(os.path.join(dir_path, filename))
 
     objTimeEndSection = time.time()  # record the end time, for this part of the code
-    funWriteToScreenAndTextFile('--> it took {} [HH:MM:SS.SS] to export the datasets'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
+    funWriteToScreenAndTextFile('--')
+    funWriteToScreenAndTextFile('**** it took {} [HH:MM:SS.SS] to export the various datasets ****'.format(funHmsString(objTimeEndSection - objTimeStartSection)))
     funWriteToScreenAndTextFile('\n')
 
     # grab the (overall) end time in a variable
     objTimeEnd = time.time()  # record the end time total, overall
     strCurrentTime = time.asctime(time.localtime(time.time()))
+    funWriteToScreenAndTextFile('---------')
     funWriteToScreenAndTextFile('Time ALL Code Finished: {}'.format(strCurrentTime))
     funWriteToScreenAndTextFile('\n')
     
     # record of function call counts
-    funWriteToScreenAndTextFile('---------')
+    funWriteToScreenAndTextFile('**********')
     funWriteToScreenAndTextFile('COUNT OF FUNCTION CALLS TOTAL / TIMES:')
-    funWriteToScreenAndTextFile('--')
+    funWriteToScreenAndTextFile('**********')
     funWriteToScreenAndTextFile('Function: <prune_headwaters> [HH:MM:SS.SS]   {}'.format(timPuningHeadwaters))
     funWriteToScreenAndTextFile('Function: <snap_junctions>   [HH:MM:SS.SS]   {}'.format(timSnapJunctions))
     funWriteToScreenAndTextFile('Function: <segment_merge>    [HH:MM:SS.SS]   {}'.format(timSegmentsMerge))
     funWriteToScreenAndTextFile('--')
-    funWriteToScreenAndTextFile('Function <get_network_data> Called:          {:,}'.format(intCounter_fun_get_network_data))
-    funWriteToScreenAndTextFile('Function <network_connections> Called:       {:,}'.format(intCounter_fun_network_connections))
-    funWriteToScreenAndTextFile('Function <build_reaches> Called:             {:,}'.format(intCounter_fun_build_reaches))
-    funWriteToScreenAndTextFile('Function <prune_headwaters> Called:          {:,}'.format(intCounter_fun_prune_headwaters))
-    funWriteToScreenAndTextFile('Function <snap_junctions> Called:            {:,}'.format(intCounter_fun_snap_junctions))
-    funWriteToScreenAndTextFile('Function <len_weighted_av> Called:           {:,} (for {:,} minutes total)'.format(intCounter_fun_len_weighted_av, round(intTotalTime_fun_len_weighted_av / 60, 1)))
-    funWriteToScreenAndTextFile('Function <merge_parameters> Called:          {:,} (for {:,} minutes total)'.format(intCounter_fun_merge_parameters, round(intTotalTime_fun_merge_parameters / 60, 1)))
-    funWriteToScreenAndTextFile('Function <correct_reach_connections> Called: {:,} (for {:,} minutes total)'.format(intCounter_fun_correct_reach_connections, round(intTotalTime_fun_correct_reach_connections / 60, 1)))
-    funWriteToScreenAndTextFile('Function <upstream_merge> Called:            {:,} (for {:,} minutes total)'.format(intCounter_fun_upstream_merge, round(intTotalTime_fun_upstream_merge / 60, 1)))
-    funWriteToScreenAndTextFile('Function <downstream_merge> Called:          {:,} (for {:,} minutes total)'.format(intCounter_fun_downstream_merge, round(intTotalTime_fun_downstream_merge / 60, 1)))
-    funWriteToScreenAndTextFile('Function <merge_all> Called:                 {:,} (for {:,} minutes total)'.format(intCounter_fun_merge_all, round(intTotalTime_fun_merge_all / 60, 1)))
-    funWriteToScreenAndTextFile('Function <update_network_data> Called:       {:,} (for {:,} minutes total)'.format(intCounter_fun_update_network_data, round(intTotalTime_fun_update_network_data / 60, 1)))
-    funWriteToScreenAndTextFile('Function <qlat_destination_compute> Called:  {:,}'.format(intCounter_fun_qlat_destination_compute))
-    funWriteToScreenAndTextFile('Function <segment_merge> Called:             {:,}'.format(intCounter_fun_segment_merge))
+    funWriteToScreenAndTextFile('Function <get_network_data> Called:          {:>12,} time(s)'.format(intCounter_fun_get_network_data))
+    funWriteToScreenAndTextFile('Function <network_connections> Called:       {:>12,} time(s)'.format(intCounter_fun_network_connections))
+    funWriteToScreenAndTextFile('Function <build_reaches> Called:             {:>12,} time(s)'.format(intCounter_fun_build_reaches))
+    funWriteToScreenAndTextFile('Function <prune_headwaters> Called:          {:>12,} time(s)'.format(intCounter_fun_prune_headwaters))
+    funWriteToScreenAndTextFile('Function <snap_junctions> Called:            {:>12,} time(s)'.format(intCounter_fun_snap_junctions))
+    funWriteToScreenAndTextFile('Function <len_weighted_av> Called:           {:>12,} time(s) @ {:>8,} minutes total'.format(intCounter_fun_len_weighted_av, round(intTotalTime_fun_len_weighted_av / 60, 2)))
+    funWriteToScreenAndTextFile('Function <merge_parameters> Called:          {:>12,} time(s) @ {:>8,} minutes total'.format(intCounter_fun_merge_parameters, round(intTotalTime_fun_merge_parameters / 60, 2)))
+    funWriteToScreenAndTextFile('Function <correct_reach_connections> Called: {:>12,} time(s) @ {:>8,} minutes total'.format(intCounter_fun_correct_reach_connections, round(intTotalTime_fun_correct_reach_connections / 60, 2)))
+    funWriteToScreenAndTextFile('Function <upstream_merge> Called:            {:>12,} time(s) @ {:>8,} minutes total'.format(intCounter_fun_upstream_merge, round(intTotalTime_fun_upstream_merge / 60, 2)))
+    funWriteToScreenAndTextFile('Function <downstream_merge> Called:          {:>12,} time(s) @ {:>8,} minutes total'.format(intCounter_fun_downstream_merge, round(intTotalTime_fun_downstream_merge / 60, 2)))
+    funWriteToScreenAndTextFile('Function <merge_all> Called:                 {:>12,} time(s) @ {:>8,} minutes total'.format(intCounter_fun_merge_all, round(intTotalTime_fun_merge_all / 60, 2)))
+    funWriteToScreenAndTextFile('Function <update_network_data> Called:       {:>12,} time(s) @ {:>8,} minutes total'.format(intCounter_fun_update_network_data, round(intTotalTime_fun_update_network_data / 60, 2)))
+    funWriteToScreenAndTextFile('Function <qlat_destination_compute> Called:  {:>12,} time(s)'.format(intCounter_fun_qlat_destination_compute))
+    funWriteToScreenAndTextFile('Function <segment_merge> Called:             {:>12,} time(s)'.format(intCounter_fun_segment_merge))
+    funWriteToScreenAndTextFile('**********')
     funWriteToScreenAndTextFile('\n')
     
     # let the user know summary of what happened
     funWriteToScreenAndTextFile('---------')
     funWriteToScreenAndTextFile('RESULTS SUMMARY:')
     funWriteToScreenAndTextFile('---------')
-    funWriteToScreenAndTextFile("Number of segments in original RouteLink: {}".format(len(RouteLink_domain)))
-    funWriteToScreenAndTextFile("Number of segments in modified RouteLink: {}".format(len(RouteLink_edit)))
     funWriteToScreenAndTextFile('\n')
-    
-    # close the run details text file
-    # to write #
-    
-    funWriteToScreenAndTextFile('---------')
+    funWriteToScreenAndTextFile("Number of segments (as points) in original RouteLink: {:>10,}".format(len(RouteLink_domain)))
+    funWriteToScreenAndTextFile("Number of segments (as points) in modified RouteLink: {:>10,}".format(len(RouteLink_edit)))
+    if len(RouteLink_domain) == len(RouteLink_edit):
+        funWriteToScreenAndTextFile('--> NOTE: RouteLink has the same number of points...')
+    funWriteToScreenAndTextFile('\n')
     funWriteToScreenAndTextFile('OVERALL: It took {} [HH:MM:SS.SS] (total) to execute ALL of this code'.format(funHmsString(objTimeEnd - objTimeStart)))
-    funWriteToScreenAndTextFile('---------')
+    funWriteToScreenAndTextFile('\n')
     funWriteToScreenAndTextFile('Run Details Text File: {}'.format(filename_rundetails))
+    funWriteToScreenAndTextFile('\n')
     funWriteToScreenAndTextFile('---------')
+    funWriteToScreenAndTextFile('\n')
     funWriteToScreenAndTextFile('CODE FINISHED')
     funWriteToScreenAndTextFile('=========')
     
