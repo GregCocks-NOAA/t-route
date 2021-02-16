@@ -2,11 +2,16 @@
 CODE STARTING
 
 
----------
+
+
+==========
+Details Of Script(s) Run:
+
+
 Script:                 nhd_network_augment.py (alpha solution with tweaks)
 Last Edit Date:         02/09/21 - GJC_Development Branch
 ---------
-Time ALL Code Started:  Tue Feb  9 12:39:54 2021
+Time ALL Code Started:  Thu Feb 11 20:30:30 2021
 Arguments:              Namespace(prune=True, return_original=True, snap=True, supernetwork='Mainstems_CONUS', threshold=250)
 Supernetwork:           Mainstems_CONUS
 Threshold (m):          250
@@ -15,103 +20,120 @@ Snap:                   True
 Return Original:        True
 
 
----------
-Extracting and organizing supernetwork data...
+==========
+Extracting and Organizing Supernetwork Data...
 
 
----------
-Prune, snap, then merge:
+==========
+Prune, Snap, Then Merge:
+
+
 ---
-pruning headwaters...
+Pruning Headwaters...
 completed 1 iterations of headwater pruning
 no more short headwaters to prune
-**** Pruning the headwaters took 0:00:02.15 [HH:MM:SS.SS] ****
+**** Pruning the headwaters took 0:00:04.16 [HH:MM:SS.SS] ****
 
 
 ---
-snapping junctions...
-finding non-headwater reaches
-Prior to iteration 1, 3 short reaches existed in the network
-finding non-headwater reaches
-After iteration 1, 0 short reaches remain
-**** Snapping Junctions took 0:00:01.97 [HH:MM:SS.SS] ****
+Snapping Junctions...
+-----
+Finding non-headwater reaches
+Prior to iteration 1: 3 short reaches existed in the network
+-----
+Finding non-headwater reaches
+After iteration 1:    0 short reaches remain
+**** Snapping Junctions took 0:00:03.76 [HH:MM:SS.SS] ****
 
 
 ---
-merging segments...
---> Tue Feb  9 12:40:42 2021: Function - Length Weighted Average called: 25,000 time(s) for a total of 0.1 minutes
---> Tue Feb  9 12:41:17 2021: Function - Merge Parameters called: 5,000 time(s) for a total of 0.5 minutes
---> Tue Feb  9 12:41:20 2021: Function - Downstream Merge called: 5,000 time(s) for a total of 1.0 minutes
---> Tue Feb  9 12:41:26 2021: Function - Length Weighted Average called: 50,000 time(s) for a total of 0.3 minutes
---> Tue Feb  9 12:42:12 2021: Function - Length Weighted Average called: 75,000 time(s) for a total of 0.4 minutes
---> Tue Feb  9 12:42:37 2021: Function - Merge Parameters called: 10,000 time(s) for a total of 1.0 minutes
---> Tue Feb  9 12:42:44 2021: Function - Downstream Merge called: 10,000 time(s) for a total of 1.9 minutes
---> Tue Feb  9 12:42:53 2021: Function - Length Weighted Average called: 100,000 time(s) for a total of 0.5 minutes
---> Tue Feb  9 12:43:32 2021: Function - Length Weighted Average called: 125,000 time(s) for a total of 0.6 minutes
---> Tue Feb  9 12:43:48 2021: Function - Merge Parameters called: 15,000 time(s) for a total of 1.5 minutes
---> Tue Feb  9 12:43:58 2021: Function - Downstream Merge called: 15,000 time(s) for a total of 2.9 minutes
---> Tue Feb  9 12:44:14 2021: Function - Length Weighted Average called: 150,000 time(s) for a total of 0.8 minutes
---> Tue Feb  9 12:44:19 2021: Function - Update Network Data called: 2,000 time(s) for a total of 0.6 minutes
-**** Segment merging took 0:04:25.31 [HH:MM:SS.SS] ****
+Merging Segments...
+--> Thu Feb 11 20:31:37 2021:  Function <Downstream Merge> called:  2,000 time(s) for a total of 0.8 minutes
+--> Thu Feb 11 20:31:59 2021:  Function <Length Weighted Average> called:  25,000 time(s) for a total of 0.3 minutes
+--> Thu Feb 11 20:32:40 2021:  Function <Downstream Merge> called:  4,000 time(s) for a total of 1.5 minutes
+--> Thu Feb 11 20:32:57 2021:  Function <Merge Parameters> called:  5,000 time(s) for a total of 0.9 minutes
+--> Thu Feb 11 20:33:11 2021:  Function <Length Weighted Average> called:  50,000 time(s) for a total of 0.5 minutes
+--> Thu Feb 11 20:33:26 2021:  Function <Downstream Merge> called:  6,000 time(s) for a total of 2.1 minutes
+--> Thu Feb 11 20:34:05 2021:  Function <Update Network Data> called: 1,000 time(s) for a total of 0.4 minutes
+--> Thu Feb 11 20:34:14 2021:  Function <Length Weighted Average> called:  75,000 time(s) for a total of 0.7 minutes
+--> Thu Feb 11 20:34:15 2021:  Function <Downstream Merge> called:  8,000 time(s) for a total of 2.7 minutes
+--> Thu Feb 11 20:34:53 2021:  Function <Merge Parameters> called:  10,000 time(s) for a total of 1.7 minutes
+--> Thu Feb 11 20:35:03 2021:  Function <Downstream Merge> called:  10,000 time(s) for a total of 3.3 minutes
+--> Thu Feb 11 20:35:17 2021:  Function <Length Weighted Average> called:  100,000 time(s) for a total of 0.9 minutes
+--> Thu Feb 11 20:35:47 2021:  Function <Downstream Merge> called:  12,000 time(s) for a total of 3.8 minutes
+--> Thu Feb 11 20:36:15 2021:  Function <Length Weighted Average> called:  125,000 time(s) for a total of 1.1 minutes
+--> Thu Feb 11 20:36:28 2021:  Function <Downstream Merge> called:  14,000 time(s) for a total of 4.4 minutes
+--> Thu Feb 11 20:36:37 2021:  Function <Merge Parameters> called:  15,000 time(s) for a total of 2.5 minutes
+--> Thu Feb 11 20:37:12 2021:  Function <Downstream Merge> called:  16,000 time(s) for a total of 5.0 minutes
+--> Thu Feb 11 20:37:12 2021:  Function <Length Weighted Average> called:  150,000 time(s) for a total of 1.3 minutes
+--> Thu Feb 11 20:37:19 2021:  Function <Update Network Data> called: 2,000 time(s) for a total of 0.6 minutes
+**** Segment merging took 0:06:46.97 [HH:MM:SS.SS] ****
 
 
----------
+==========
 EXPORTING VARIOUS FILES TO: C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_250m_prune_snap_merge
 --
-1) Exporting RouteLink file as SHP 'file':             C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_250m_prune_snap_merge\RouteLink_Mainstems_CONUS_250m_prune_snap_merge.shp
+1) Exporting edited RouteLink file as SHP 'file':      C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_250m_prune_snap_merge\RouteLink_Mainstems_CONUS_250m_prune_snap_merge.shp
 2) Exporting CrossWalk file as JSON file:              C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_250m_prune_snap_merge\Crosswalk_Mainstems_CONUS_250m_prune_snap_merge.json
 3) Exporting original RouteLink file as a NetCDFfile:  C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_250m_prune_snap_merge\RouteLink_Mainstems_CONUS_250m_prune_snap_merge_original.nc
 4) Exporting edited RouteLink file as a NetCDFfile:    C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_250m_prune_snap_merge\RouteLink_Mainstems_CONUS_250m_prune_snap_merge_modified.nc
-5) Exporting unmodified RouteLink file as SHP 'file':  C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_250m_prune_snap_merge\RouteLink_Mainstems_CONUS_250m_prune_snap_merge.shp
+5) Exporting original RouteLink file as SHP 'file':     C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_250m_prune_snap_merge\RouteLink_Mainstems_CONUS_250m_prune_snap_merge.shp
 --
-**** it took 0:00:55.90 [HH:MM:SS.SS] to export the various datasets ****
+**** it took 0:00:55.89 [HH:MM:SS.SS] to export the various datasets ****
 
 
 ---------
-Time ALL Code Finished: Tue Feb  9 12:45:21 2021
+Time ALL Code Finished: Thu Feb 11 20:38:22 2021
 
 
-**********
-COUNT OF FUNCTION CALLS TOTAL / TIMES:
-**********
-Function: <prune_headwaters> [HH:MM:SS.SS]   0:00:02.15
-Function: <snap_junctions>   [HH:MM:SS.SS]   0:00:01.97
-Function: <segment_merge>    [HH:MM:SS.SS]   0:04:25.31
+==========
+Count & Time Metrics  For Various Function Calls:
+
+
+Function: <prune_headwaters> [HH:MM:SS.SS]   0:00:04.16
+Function: <snap_junctions>   [HH:MM:SS.SS]   0:00:03.76
+Function: <segment_merge>    [HH:MM:SS.SS]   0:06:46.97
 --
 Function <get_network_data> Called:                     1 time(s)
 Function <network_connections> Called:                  5 time(s)
 Function <build_reaches> Called:                        5 time(s)
 Function <prune_headwaters> Called:                     1 time(s)
 Function <snap_junctions> Called:                       1 time(s)
-Function <len_weighted_av> Called:                155,268 time(s) @     0.81 minutes total
-Function <merge_parameters> Called:                17,252 time(s) @     1.77 minutes total
-Function <correct_reach_connections> Called:        2,068 time(s) @     0.27 minutes total
-Function <upstream_merge> Called:                     681 time(s) @     0.12 minutes total
-Function <downstream_merge> Called:                16,571 time(s) @     3.21 minutes total
-Function <merge_all> Called:                            0 time(s) @      0.0 minutes total
-Function <update_network_data> Called:              2,068 time(s) @     0.59 minutes total
+Function <len_weighted_av> Called:                155,268 time(s) @   1.31 minutes total
+Function <merge_parameters> Called:                17,252 time(s) @   2.79 minutes total
+Function <correct_reach_connections> Called:        2,068 time(s) @   0.45 minutes total
+Function <upstream_merge> Called:                     681 time(s) @   0.19 minutes total
+Function <downstream_merge> Called:                16,571 time(s) @   5.16 minutes total
+Function <merge_all> Called:                            0 time(s) @    0.0 minutes total
+Function <update_network_data> Called:              2,068 time(s) @   0.65 minutes total
 Function <qlat_destination_compute> Called:             1 time(s)
 Function <segment_merge> Called:                        1 time(s)
-**********
 
 
----------
-RESULTS SUMMARY:
----------
+==========
+Results Summary:
 
 
 Number of segments (as points) in original RouteLink:    109,222
 Number of segments (as points) in modified RouteLink:     91,967
 
 
-OVERALL: It took 0:05:26.87 [HH:MM:SS.SS] (total) to execute ALL of this code
+OVERALL: It took 0:07:52.57 [HH:MM:SS.SS] (total) to execute ALL of this code
 
 
-Run Details Text File: RunDetails_Mainstems_CONUS_250m_prune_snap_merge.txt
-
-
----------
-
-
-CODE FINISHED
+Run Details Text File:                RunDetails_Mainstems_CONUS_250m_prune_snap_merge.txt
+cProfiler / Pstat Details DAT File:   PstatDetails_Mainstems_CONUS_250m_prune_snap_merge.dat
 =========
+
+
+================================================================
+cProfile / pstats Summary:
+
+
+*** to write ***
+
+
+----------
+Top 25 Cumulative Time -->
+
+

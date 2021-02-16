@@ -2,11 +2,16 @@
 CODE STARTING
 
 
----------
+
+
+==========
+Details Of Script(s) Run:
+
+
 Script:                 nhd_network_augment.py (alpha solution with tweaks)
 Last Edit Date:         02/09/21 - GJC_Development Branch
 ---------
-Time ALL Code Started:  Tue Feb  9 13:25:33 2021
+Time ALL Code Started:  Wed Feb 10 16:38:33 2021
 Arguments:              Namespace(prune=True, return_original=True, snap=True, supernetwork='Brazos_LowerColorado_FULL_RES', threshold=250)
 Supernetwork:           Brazos_LowerColorado_FULL_RES
 Threshold (m):          250
@@ -15,95 +20,100 @@ Snap:                   True
 Return Original:        True
 
 
----------
-Extracting and organizing supernetwork data...
+==========
+Extracting and Organizing Supernetwork Data...
 
 
----------
-Prune, snap, then merge:
+==========
+Prune, Snap, Then Merge:
+
+
 ---
-pruning headwaters...
+Pruning Headwaters...
 completed 1 iterations of headwater pruning
 completed 2 iterations of headwater pruning
 no more short headwaters to prune
-**** Pruning the headwaters took 0:00:09.49 [HH:MM:SS.SS] ****
+**** Pruning the headwaters took 0:00:07.42 [HH:MM:SS.SS] ****
 
 
 ---
-snapping junctions...
-finding non-headwater reaches
-Prior to iteration 1, 271 short reaches existed in the network
-finding non-headwater reaches
-After iteration 1, 9 short reaches remain
-finding non-headwater reaches
-After iteration 2, 1 short reaches remain
-finding non-headwater reaches
-After iteration 3, 0 short reaches remain
-**** Snapping Junctions took 0:00:12.32 [HH:MM:SS.SS] ****
+Snapping Junctions...
+-----
+Finding non-headwater reaches
+Prior to iteration 1: 271 short reaches existed in the network
+-----
+Finding non-headwater reaches
+After iteration 1:    9 short reaches remain
+-----
+Finding non-headwater reaches
+After iteration 2:    1 short reaches remain
+-----
+Finding non-headwater reaches
+After iteration 3:    0 short reaches remain
+**** Snapping Junctions took 0:00:11.06 [HH:MM:SS.SS] ****
 
 
 ---
-merging segments...
---> Tue Feb  9 13:26:52 2021: Function - Update Network Data called: 2,000 time(s) for a total of 0.2 minutes
-**** Segment merging took 0:01:01.39 [HH:MM:SS.SS] ****
+Merging Segments...
+--> Wed Feb 10 16:39:19 2021:  Function <Update Network Data> called: 1,000 time(s) for a total of 0.1 minutes
+--> Wed Feb 10 16:39:43 2021:  Function <Update Network Data> called: 2,000 time(s) for a total of 0.2 minutes
+**** Segment merging took 0:00:54.68 [HH:MM:SS.SS] ****
 
 
----------
+==========
 EXPORTING VARIOUS FILES TO: C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge
 --
-1) Exporting RouteLink file as SHP 'file':             C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge\RouteLink_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge.shp
+1) Exporting edited RouteLink file as SHP 'file':      C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge\RouteLink_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge.shp
 2) Exporting CrossWalk file as JSON file:              C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge\Crosswalk_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge.json
 3) Exporting original RouteLink file as a NetCDFfile:  C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge\RouteLink_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge_original.nc
 4) Exporting edited RouteLink file as a NetCDFfile:    C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge\RouteLink_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge_modified.nc
-5) Exporting unmodified RouteLink file as SHP 'file':  C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge\RouteLink_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge.shp
+5) Exporting original RouteLink file as SHP 'file':     C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge\RouteLink_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge.shp
 --
-**** it took 0:00:13.25 [HH:MM:SS.SS] to export the various datasets ****
+**** it took 0:00:11.38 [HH:MM:SS.SS] to export the various datasets ****
 
 
 ---------
-Time ALL Code Finished: Tue Feb  9 13:27:10 2021
+Time ALL Code Finished: Wed Feb 10 16:39:59 2021
 
 
-**********
-COUNT OF FUNCTION CALLS TOTAL / TIMES:
-**********
-Function: <prune_headwaters> [HH:MM:SS.SS]   0:00:09.49
-Function: <snap_junctions>   [HH:MM:SS.SS]   0:00:12.32
-Function: <segment_merge>    [HH:MM:SS.SS]   0:01:01.39
+==========
+Count & Time Metrics  For Various Function Calls:
+
+
+Function: <prune_headwaters> [HH:MM:SS.SS]   0:00:07.42
+Function: <snap_junctions>   [HH:MM:SS.SS]   0:00:11.06
+Function: <segment_merge>    [HH:MM:SS.SS]   0:00:54.68
 --
 Function <get_network_data> Called:                     1 time(s)
 Function <network_connections> Called:                  8 time(s)
 Function <build_reaches> Called:                        8 time(s)
 Function <prune_headwaters> Called:                     1 time(s)
 Function <snap_junctions> Called:                       1 time(s)
-Function <len_weighted_av> Called:                 23,598 time(s) @     0.12 minutes total
-Function <merge_parameters> Called:                 2,622 time(s) @     0.25 minutes total
-Function <correct_reach_connections> Called:        2,213 time(s) @     0.01 minutes total
-Function <upstream_merge> Called:                   1,191 time(s) @      0.2 minutes total
-Function <downstream_merge> Called:                 1,431 time(s) @     0.27 minutes total
-Function <merge_all> Called:                            0 time(s) @      0.0 minutes total
-Function <update_network_data> Called:              2,213 time(s) @     0.25 minutes total
+Function <len_weighted_av> Called:                 23,598 time(s) @    0.1 minutes total
+Function <merge_parameters> Called:                 2,622 time(s) @   0.22 minutes total
+Function <correct_reach_connections> Called:        2,213 time(s) @   0.01 minutes total
+Function <upstream_merge> Called:                   1,191 time(s) @   0.17 minutes total
+Function <downstream_merge> Called:                 1,431 time(s) @   0.23 minutes total
+Function <merge_all> Called:                            0 time(s) @    0.0 minutes total
+Function <update_network_data> Called:              2,213 time(s) @   0.23 minutes total
 Function <qlat_destination_compute> Called:             1 time(s)
 Function <segment_merge> Called:                        1 time(s)
-**********
 
 
----------
-RESULTS SUMMARY:
----------
+==========
+Results Summary:
 
 
 Number of segments (as points) in original RouteLink:     26,823
 Number of segments (as points) in modified RouteLink:     24,092
 
 
-OVERALL: It took 0:01:37.88 [HH:MM:SS.SS] (total) to execute ALL of this code
+OVERALL: It took 0:01:25.75 [HH:MM:SS.SS] (total) to execute ALL of this code
 
 
 Run Details Text File: RunDetails_Brazos_LowerColorado_FULL_RES_250m_prune_snap_merge.txt
 
 
----------
 
 
 CODE FINISHED

@@ -1,0 +1,154 @@
+=========
+CODE STARTING
+
+
+
+
+==========
+Details Of Script(s) Run:
+
+
+Script:                 nhd_network_augment.py (alpha solution with tweaks)
+Last Edit Date:         02/09/21 - GJC_Development Branch
+---------
+Time ALL Code Started:  Fri Feb 12 00:32:25 2021
+Arguments:              Namespace(prune=True, return_original=True, snap=True, supernetwork='USSEast_HU03_FULL_RES', threshold=250)
+Supernetwork:           USSEast_HU03_FULL_RES
+Threshold (m):          250
+Prune:                  True
+Snap:                   True
+Return Original:        True
+
+
+==========
+Extracting and Organizing Supernetwork Data...
+
+
+==========
+Prune, Snap, Then Merge:
+
+
+---
+Pruning Headwaters...
+completed 1 iterations of headwater pruning
+completed 2 iterations of headwater pruning
+completed 3 iterations of headwater pruning
+no more short headwaters to prune
+**** Pruning the headwaters took 0:04:17.19 [HH:MM:SS.SS] ****
+
+
+---
+Snapping Junctions...
+-----
+Finding non-headwater reaches
+Prior to iteration 1: 9,484 short reaches existed in the network
+-----
+Finding non-headwater reaches
+After iteration 1:    700 short reaches remain
+-----
+Finding non-headwater reaches
+After iteration 2:    91 short reaches remain
+-----
+Finding non-headwater reaches
+After iteration 3:    22 short reaches remain
+-----
+Finding non-headwater reaches
+After iteration 4:    5 short reaches remain
+-----
+Finding non-headwater reaches
+After iteration 5:    2 short reaches remain
+-----
+Finding non-headwater reaches
+After iteration 6:    0 short reaches remain
+**** Snapping Junctions took 0:07:03.37 [HH:MM:SS.SS] ****
+
+
+---
+Merging Segments...
+--> Fri Feb 12 00:45:10 2021:  Function <Update Network Data> called: 1,000 time(s) for a total of 0.8 minutes
+--> Fri Feb 12 00:46:27 2021:  Function <Update Network Data> called: 2,000 time(s) for a total of 1.6 minutes
+--> Fri Feb 12 00:46:49 2021:  Function <Length Weighted Average> called:  25,000 time(s) for a total of 0.2 minutes
+--> Fri Feb 12 00:47:43 2021:  Function <Update Network Data> called: 3,000 time(s) for a total of 2.4 minutes
+--> Fri Feb 12 00:48:05 2021:  Function <Downstream Merge> called:  2,000 time(s) for a total of 0.5 minutes
+--> Fri Feb 12 00:48:56 2021:  Function <Merge Parameters> called:  5,000 time(s) for a total of 0.7 minutes
+--> Fri Feb 12 00:49:05 2021:  Function <Update Network Data> called: 4,000 time(s) for a total of 3.3 minutes
+--> Fri Feb 12 00:49:32 2021:  Function <Length Weighted Average> called:  50,000 time(s) for a total of 0.4 minutes
+--> Fri Feb 12 00:50:36 2021:  Function <Correct Reach Connections> called:  5,000 time(s) for a total of 0.0 minutes
+--> Fri Feb 12 00:50:37 2021:  Function <Update Network Data> called: 5,000 time(s) for a total of 4.2 minutes
+--> Fri Feb 12 00:52:07 2021:  Function <Update Network Data> called: 6,000 time(s) for a total of 5.1 minutes
+--> Fri Feb 12 00:52:58 2021:  Function <Length Weighted Average> called:  75,000 time(s) for a total of 0.6 minutes
+--> Fri Feb 12 00:53:06 2021:  Function <Downstream Merge> called:  4,000 time(s) for a total of 1.1 minutes
+--> Fri Feb 12 00:53:28 2021:  Function <Update Network Data> called: 7,000 time(s) for a total of 5.9 minutes
+--> Fri Feb 12 00:54:12 2021:  Function <Upstream Merge> called:  5,000 time(s) for a total of 1.3 minutes
+--> Fri Feb 12 00:54:46 2021:  Function <Update Network Data> called: 8,000 time(s) for a total of 6.7 minutes
+--> Fri Feb 12 00:54:50 2021:  Function <Merge Parameters> called:  10,000 time(s) for a total of 1.4 minutes
+--> Fri Feb 12 00:56:12 2021:  Function <Update Network Data> called: 9,000 time(s) for a total of 7.6 minutes
+--> Fri Feb 12 00:56:15 2021:  Function <Length Weighted Average> called:  100,000 time(s) for a total of 0.8 minutes
+--> Fri Feb 12 00:57:38 2021:  Function <Correct Reach Connections> called:  10,000 time(s) for a total of 0.0 minutes
+--> Fri Feb 12 00:57:38 2021:  Function <Update Network Data> called: 10,000 time(s) for a total of 8.4 minutes
+--> Fri Feb 12 00:58:46 2021:  Function <Downstream Merge> called:  6,000 time(s) for a total of 1.7 minutes
+--> Fri Feb 12 00:58:59 2021:  Function <Update Network Data> called: 11,000 time(s) for a total of 9.2 minutes
+--> Fri Feb 12 00:59:31 2021:  Function <Length Weighted Average> called:  125,000 time(s) for a total of 0.9 minutes
+--> Fri Feb 12 01:00:15 2021:  Function <Update Network Data> called: 12,000 time(s) for a total of 10.0 minutes
+--> Fri Feb 12 01:00:43 2021:  Function <Merge Parameters> called:  15,000 time(s) for a total of 2.1 minutes
+--> Fri Feb 12 01:01:32 2021:  Function <Update Network Data> called: 13,000 time(s) for a total of 10.8 minutes
+--> Fri Feb 12 01:02:25 2021:  Function <Length Weighted Average> called:  150,000 time(s) for a total of 1.1 minutes
+--> Fri Feb 12 01:02:47 2021:  Function <Update Network Data> called: 14,000 time(s) for a total of 11.6 minutes
+--> Fri Feb 12 01:02:58 2021:  Function <Downstream Merge> called:  8,000 time(s) for a total of 2.2 minutes
+--> Fri Feb 12 01:04:01 2021:  Function <Correct Reach Connections> called:  15,000 time(s) for a total of 0.0 minutes
+--> Fri Feb 12 01:04:01 2021:  Function <Update Network Data> called: 15,000 time(s) for a total of 12.3 minutes
+--> Fri Feb 12 01:04:39 2021:  Function <Upstream Merge> called:  10,000 time(s) for a total of 2.5 minutes
+--> Fri Feb 12 01:05:04 2021:  Function <Length Weighted Average> called:  175,000 time(s) for a total of 1.3 minutes
+--> Fri Feb 12 01:05:16 2021:  Function <Update Network Data> called: 16,000 time(s) for a total of 13.1 minutes
+--> Fri Feb 12 01:05:39 2021:  Function <Merge Parameters> called:  20,000 time(s) for a total of 2.8 minutes
+--> Fri Feb 12 01:06:24 2021:  Function <Downstream Merge> called:  10,000 time(s) for a total of 2.7 minutes
+--> Fri Feb 12 01:06:32 2021:  Function <Update Network Data> called: 17,000 time(s) for a total of 13.8 minutes
+--> Fri Feb 12 01:07:47 2021:  Function <Update Network Data> called: 18,000 time(s) for a total of 14.6 minutes
+--> Fri Feb 12 01:07:50 2021:  Function <Length Weighted Average> called:  200,000 time(s) for a total of 1.5 minutes
+--> Fri Feb 12 01:09:02 2021:  Function <Update Network Data> called: 19,000 time(s) for a total of 15.3 minutes
+--> Fri Feb 12 01:10:16 2021:  Function <Correct Reach Connections> called:  20,000 time(s) for a total of 0.1 minutes
+--> Fri Feb 12 01:10:16 2021:  Function <Update Network Data> called: 20,000 time(s) for a total of 16.1 minutes
+--> Fri Feb 12 01:10:34 2021:  Function <Length Weighted Average> called:  225,000 time(s) for a total of 1.6 minutes
+--> Fri Feb 12 01:10:34 2021:  Function <Merge Parameters> called:  25,000 time(s) for a total of 3.5 minutes
+--> Fri Feb 12 01:10:34 2021:  Function <Downstream Merge> called:  12,000 time(s) for a total of 3.2 minutes
+--> Fri Feb 12 01:11:29 2021:  Function <Update Network Data> called: 21,000 time(s) for a total of 16.9 minutes
+--> Fri Feb 12 01:12:44 2021:  Function <Update Network Data> called: 22,000 time(s) for a total of 17.6 minutes
+--> Fri Feb 12 01:13:22 2021:  Function <Length Weighted Average> called:  250,000 time(s) for a total of 1.8 minutes
+--> Fri Feb 12 01:13:57 2021:  Function <Update Network Data> called: 23,000 time(s) for a total of 18.3 minutes
+--> Fri Feb 12 01:14:17 2021:  Function <Upstream Merge> called:  15,000 time(s) for a total of 3.7 minutes
+--> Fri Feb 12 01:14:57 2021:  Function <Downstream Merge> called:  14,000 time(s) for a total of 3.8 minutes
+--> Fri Feb 12 01:15:09 2021:  Function <Update Network Data> called: 24,000 time(s) for a total of 19.1 minutes
+--> Fri Feb 12 01:15:35 2021:  Function <Merge Parameters> called:  30,000 time(s) for a total of 4.2 minutes
+--> Fri Feb 12 01:16:05 2021:  Function <Length Weighted Average> called:  275,000 time(s) for a total of 2.0 minutes
+--> Fri Feb 12 01:16:27 2021:  Function <Correct Reach Connections> called:  25,000 time(s) for a total of 0.1 minutes
+--> Fri Feb 12 01:16:27 2021:  Function <Update Network Data> called: 25,000 time(s) for a total of 19.9 minutes
+--> Fri Feb 12 01:18:02 2021:  Function <Update Network Data> called: 26,000 time(s) for a total of 20.8 minutes
+--> Fri Feb 12 01:18:49 2021:  Function <Downstream Merge> called:  16,000 time(s) for a total of 4.4 minutes
+--> Fri Feb 12 01:19:16 2021:  Function <Length Weighted Average> called:  300,000 time(s) for a total of 2.2 minutes
+--> Fri Feb 12 01:19:17 2021:  Function <Update Network Data> called: 27,000 time(s) for a total of 21.6 minutes
+--> Fri Feb 12 01:20:30 2021:  Function <Update Network Data> called: 28,000 time(s) for a total of 22.3 minutes
+--> Fri Feb 12 01:20:40 2021:  Function <Merge Parameters> called:  35,000 time(s) for a total of 5.0 minutes
+--> Fri Feb 12 01:21:40 2021:  Function <Length Weighted Average> called:  325,000 time(s) for a total of 2.4 minutes
+--> Fri Feb 12 01:21:43 2021:  Function <Update Network Data> called: 29,000 time(s) for a total of 23.1 minutes
+--> Fri Feb 12 01:22:03 2021:  Function <Downstream Merge> called:  18,000 time(s) for a total of 4.9 minutes
+--> Fri Feb 12 01:22:58 2021:  Function <Correct Reach Connections> called:  30,000 time(s) for a total of 0.1 minutes
+--> Fri Feb 12 01:22:58 2021:  Function <Update Network Data> called: 30,000 time(s) for a total of 23.8 minutes
+--> Fri Feb 12 01:24:10 2021:  Function <Update Network Data> called: 31,000 time(s) for a total of 24.5 minutes
+--> Fri Feb 12 01:24:20 2021:  Function <Length Weighted Average> called:  350,000 time(s) for a total of 2.6 minutes
+--> Fri Feb 12 01:25:00 2021:  Function <Upstream Merge> called:  20,000 time(s) for a total of 5.0 minutes
+--> Fri Feb 12 01:25:24 2021:  Function <Update Network Data> called: 32,000 time(s) for a total of 25.2 minutes
+--> Fri Feb 12 01:25:25 2021:  Function <Merge Parameters> called:  40,000 time(s) for a total of 5.6 minutes
+--> Fri Feb 12 01:25:56 2021:  Function <Downstream Merge> called:  20,000 time(s) for a total of 5.4 minutes
+--> Fri Feb 12 01:26:38 2021:  Function <Update Network Data> called: 33,000 time(s) for a total of 26.0 minutes
+--> Fri Feb 12 01:27:00 2021:  Function <Length Weighted Average> called:  375,000 time(s) for a total of 2.8 minutes
+--> Fri Feb 12 01:27:47 2021:  Function <Update Network Data> called: 34,000 time(s) for a total of 26.7 minutes
+--> Fri Feb 12 01:28:59 2021:  Function <Correct Reach Connections> called:  35,000 time(s) for a total of 0.1 minutes
+--> Fri Feb 12 01:28:59 2021:  Function <Update Network Data> called: 35,000 time(s) for a total of 27.4 minutes
+--> Fri Feb 12 01:29:36 2021:  Function <Length Weighted Average> called:  400,000 time(s) for a total of 2.9 minutes
+--> Fri Feb 12 01:29:45 2021:  Function <Downstream Merge> called:  22,000 time(s) for a total of 6.0 minutes
+--> Fri Feb 12 01:30:07 2021:  Function <Merge Parameters> called:  45,000 time(s) for a total of 6.3 minutes
+--> Fri Feb 12 01:30:09 2021:  Function <Update Network Data> called: 36,000 time(s) for a total of 28.1 minutes
+--> Fri Feb 12 01:31:21 2021:  Function <Update Network Data> called: 37,000 time(s) for a total of 28.8 minutes
+--> Fri Feb 12 01:32:18 2021:  Function <Length Weighted Average> called:  425,000 time(s) for a total of 3.1 minutes
+--> Fri Feb 12 01:32:31 2021:  Function <Update Network Data> called: 38,000 time(s) for a total of 29.5 minutes
+--> Fri Feb 12 01:33:26 2021:  Function <Downstream Merge> called:  24,000 time(s) for a total of 6.5 minutes

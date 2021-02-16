@@ -15,7 +15,15 @@ import datetime
 import statistics
 import netCDF4 as nc
 import fsspec
+import cProfile
+import pstats
+import re
+from pstats import SortKey
+from memory_profiler import profile
+import requests 
+import gc
 
+# set the root path for output
 root = pathlib.Path("../../../").resolve()
 sys.path.append(os.path.join(root, "src", "python_framework_v01"))
 
@@ -24,7 +32,29 @@ import nhd_network
 import nhd_io
 import network_dl
 
+# set up a file for memory useage logging
+# fp = open("memory_useage.log", "w+")
 
+
+def dump_garbage():
+    """
+    show us what the garbage is about
+    """
+    
+    # Force collection
+    print('===============================')
+    print("\nGARBAGE:")
+    gc.collect(  )
+
+    print('===============================')
+    print("\nGARBAGE OBJECTS:")
+    for x in gc.garbage:
+        s = str(x)
+        if len(s) > 80: s = s[:77]+'...'
+        print(type(x),"\n  ", s)
+
+
+# @profile(stream=fp)    # decorator for memory profiler 
 def funWriteToScreenAndTextFile(strMessage):
 
     # print to the screen
@@ -36,6 +66,7 @@ def funWriteToScreenAndTextFile(strMessage):
     # end funWriteToScreenAndTextFile
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def funHmsString(sec_elapsed):
 
     h = int(sec_elapsed / (60 * 60))
@@ -46,6 +77,7 @@ def funHmsString(sec_elapsed):
     # end funHmsString
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def _handle_args():
 
     parser = argparse.ArgumentParser(
@@ -61,7 +93,7 @@ def _handle_args():
     )
     parser.add_argument(
         "--network",
-        help="Choose from among the pre-programmed supernetworks (Pocono_TEST1, Pocono_TEST2, LowerColorado_Conchos_FULL_RES, Brazos_LowerColorado_ge5, Brazos_LowerColorado_FULL_RES, Brazos_LowerColorado_Named_Streams, CONUS_ge5, Mainstems_CONUS, CONUS_Named_Streams, CONUS_FULL_RES_v20, CapeFear_FULL_RES)",
+        help="Choose from among the pre-programmed supernetworks (Pocono_TEST1, Pocono_TEST2, LowerColorado_Conchos_FULL_RES, Brazos_LowerColorado_ge5, Brazos_LowerColorado_FULL_RES, Brazos_LowerColorado_Named_Streams, CONUS_ge5, Mainstems_CONUS, CONUS_Named_Streams, CONUS_FULL_RES_v20, CapeFear_FULL_RES, PNW_HU17_FULL_RES, USSEast_HU03_FULL_RES, USWest_FULL_RES)",
         dest="supernetwork",
         choices=[
             "Pocono_TEST1",
@@ -76,6 +108,9 @@ def _handle_args():
             "CONUS_FULL_RES_v20",
             "CapeFear_FULL_RES",
             "Florence_FULL_RES",
+            "PNW_HU17_FULL_RES",
+            "USSEast_HU03_FULL_RES",
+            "USWest_FULL_RES",
         ],
         default="CapeFear_FULL_RES",
     )
@@ -106,6 +141,7 @@ def _handle_args():
     # end _handle_args
 
 
+# # @profile(stream=fp)    # decorator for memory profiler 
 def get_network_data(network_name):
 
     # keep track of function calls
@@ -166,6 +202,7 @@ def get_network_data(network_name):
     # end get_network_data
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def network_connections(data, network_data):
 
     # keep track of function calls
@@ -193,6 +230,7 @@ def network_connections(data, network_data):
     # end network_connections
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def build_reaches(rconn):
 
     # keep track of function calls
@@ -216,6 +254,7 @@ def build_reaches(rconn):
     # end build_reaches
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def prune_headwaters(data, threshold, network_data):
 
     # keep track of function calls
@@ -312,6 +351,7 @@ def prune_headwaters(data, threshold, network_data):
     # end prune_headwaters
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def snap_junctions(data, threshold, network_data):
 
     # keep track of function calls
@@ -370,7 +410,8 @@ def snap_junctions(data, threshold, network_data):
         # build list of headwater segments
         hws = connections.keys() - chain.from_iterable(connections.values())
 
-        funWriteToScreenAndTextFile("finding non-headwater reaches")
+        funWriteToScreenAndTextFile("-----")
+        funWriteToScreenAndTextFile("Finding non-headwater reaches")
         # create a list of short reaches stranded between junctions
         short_reaches = ()
         for sublists in tqdm(list(subreaches.values())):
@@ -383,9 +424,9 @@ def snap_junctions(data, threshold, network_data):
                     short_reaches += tuple(rch)
 
         if iter_num > 1:
-            funWriteToScreenAndTextFile("After iteration {}, {} short reaches remain".format(iter_num - 1, len(short_reaches)))
+            funWriteToScreenAndTextFile("After iteration {}:    {:,} short reaches remain".format(iter_num - 1, len(short_reaches)))
         else:
-            funWriteToScreenAndTextFile("Prior to iteration {}, {} short reaches existed in the network".format(iter_num, len(short_reaches)))
+            funWriteToScreenAndTextFile("Prior to iteration {}: {:,} short reaches existed in the network".format(iter_num, len(short_reaches)))
 
         # check that short reaches exist, if none - terminate process
         if len(short_reaches) == 0:
@@ -433,6 +474,7 @@ def snap_junctions(data, threshold, network_data):
     # end snap_junctions
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def len_weighted_av(df, var, weight):
 
     # function start time
@@ -460,13 +502,14 @@ def len_weighted_av(df, var, weight):
     
     # let the user know at increments
     if int(intCounter_fun_len_weighted_av / 25000) == intCounter_fun_len_weighted_av / 25000:
-        funWriteToScreenAndTextFile('--> {}: Function - Length Weighted Average called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_len_weighted_av, round(intTotalTime_fun_len_weighted_av / 60, 1)))
+        funWriteToScreenAndTextFile('--> {}:  Function <Length Weighted Average> called:  {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_len_weighted_av, round(intTotalTime_fun_len_weighted_av / 60, 1)))
         
     return x
     
     # end len_weighted_av
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def merge_parameters(to_merge):
 
     # function start time
@@ -508,13 +551,14 @@ def merge_parameters(to_merge):
     
     # let the user know at increments
     if int(intCounter_fun_merge_parameters / 5000) == intCounter_fun_merge_parameters / 5000:
-        funWriteToScreenAndTextFile('--> {}: Function - Merge Parameters called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_merge_parameters, round(intTotalTime_fun_merge_parameters / 60, 1)))
+        funWriteToScreenAndTextFile('--> {}:  Function <Merge Parameters> called:  {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_merge_parameters, round(intTotalTime_fun_merge_parameters / 60, 1)))
 
     return data_replace
     
     # merge_parameters
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def correct_reach_connections(data_merged):
 
     # function start time
@@ -542,13 +586,14 @@ def correct_reach_connections(data_merged):
     
     # let the user know at increments
     if int(intCounter_fun_correct_reach_connections / 5000) == intCounter_fun_correct_reach_connections / 5000:
-        funWriteToScreenAndTextFile('--> {}: Function - Correct Reach Connections called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_correct_reach_connections, round(intTotalTime_fun_correct_reach_connections / 60, 1)))
+        funWriteToScreenAndTextFile('--> {}:  Function <Correct Reach Connections> called:  {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_correct_reach_connections, round(intTotalTime_fun_correct_reach_connections / 60, 1)))
 
     return data_merged
     
     # end correct_reach_connections
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def upstream_merge(data_merged, chop):
 
     # function start time
@@ -589,13 +634,14 @@ def upstream_merge(data_merged, chop):
     
     # let the user know at increments
     if int(intCounter_fun_upstream_merge / 5000) == intCounter_fun_upstream_merge / 5000:
-        funWriteToScreenAndTextFile('--> {}: Function - Upstream Merge called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_upstream_merge, round(intTotalTime_fun_upstream_merge / 60, 1)))
+        funWriteToScreenAndTextFile('--> {}:  Function <Upstream Merge> called:  {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_upstream_merge, round(intTotalTime_fun_upstream_merge / 60, 1)))
         
     return data_merged, chop
     
     # upstream_merge
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def downstream_merge(data_merged, chop, thresh):
 
     # function start time
@@ -642,14 +688,15 @@ def downstream_merge(data_merged, chop, thresh):
     intTotalTime_fun_downstream_merge += time.time() - objFunStartTime
     
     # let the user know at increments
-    if int(intCounter_fun_downstream_merge / 5000) == intCounter_fun_downstream_merge / 5000:
-        funWriteToScreenAndTextFile('--> {}: Function - Downstream Merge called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_downstream_merge, round(intTotalTime_fun_downstream_merge / 60, 1)))
+    if int(intCounter_fun_downstream_merge / 2000) == intCounter_fun_downstream_merge / 2000:
+        funWriteToScreenAndTextFile('--> {}:  Function <Downstream Merge> called:  {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_downstream_merge, round(intTotalTime_fun_downstream_merge / 60, 1)))
         
     return data_merged, chop
     
     # end downstream_merge
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def merge_all(rch, data, chop):
 
     # function start time
@@ -694,13 +741,14 @@ def merge_all(rch, data, chop):
     
     # let the user know at increments
     if int(intCounter_fun_merge_all / 5000) == intCounter_fun_merge_all / 5000:
-        funWriteToScreenAndTextFile('--> {}: Function - Merge All called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_merge_all, round(intTotalTime_fun_merge_all / 60, 1)))
+        funWriteToScreenAndTextFile('--> {}:  Function <Merge All> called:  {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_merge_all, round(intTotalTime_fun_merge_all / 60, 1)))
         
     return data_merged, chop
     
     # end merge_all
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def update_network_data(data, rch, data_merged, chop, rconn):
 
     # function start time
@@ -740,14 +788,15 @@ def update_network_data(data, rch, data_merged, chop, rconn):
     intTotalTime_fun_update_network_data += time.time() - objFunStartTime
     
     # let the user know at increments
-    if int(intCounter_fun_update_network_data / 2000) == intCounter_fun_update_network_data / 2000:
-        funWriteToScreenAndTextFile('--> {}: Function - Update Network Data called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_update_network_data, round(intTotalTime_fun_update_network_data / 60, 1)))
+    if int(intCounter_fun_update_network_data / 1000) == intCounter_fun_update_network_data / 1000:
+        funWriteToScreenAndTextFile('--> {}:  Function <Update Network Data> called: {:,} time(s) for a total of {:,} minutes'.format(time.asctime(time.localtime(time.time())), intCounter_fun_update_network_data, round(intTotalTime_fun_update_network_data / 60, 1)))
 
     return data
     
     # end update_network_data
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def qlat_destination_compute(data_native, data_merged, merged_segments, pruned_segments, network_data):
     
     # keep track of function calls
@@ -794,6 +843,7 @@ def qlat_destination_compute(data_native, data_merged, merged_segments, pruned_s
     # end qlat_destination_compute
 
 
+# @profile(stream=fp)    # decorator for memory profiler 
 def segment_merge(data_native, data, network_data, thresh, pruned_segments):    # data_native is the native RouteLink file as a pandas dataframe
 
     # keep track of function calls
@@ -919,6 +969,10 @@ def segment_merge(data_native, data, network_data, thresh, pruned_segments):    
 
 def main():
 
+    # start the profiler, etc
+    profiler = cProfile.Profile()
+    profiler.enable()
+    
     # grab the start time in a variable
     objTimeStart = time.time()  # record the start time, for the whole code loop
     strCurrentTime = time.asctime(time.localtime(time.time()))
@@ -939,6 +993,10 @@ def main():
         os.mkdir(dir_path)
     global objRunDetailsTextFile  # so it works in various functions
     objRunDetailsTextFile = open(os.path.join(dir_path, filename_rundetails),'w')
+    
+    # cProfile / pstat dat file details
+    filename_pstatdetails = 'PstatDetails_{}_{}m_prune_snap_merge.dat'.format(supernetwork, str(threshold))
+    objPstatDetailsDatFile = os.path.join(dir_path, filename_pstatdetails)
     
     # set up some counters for number of times functions called, etc
     
@@ -1007,7 +1065,10 @@ def main():
     funWriteToScreenAndTextFile('=========')
     funWriteToScreenAndTextFile('CODE STARTING')
     funWriteToScreenAndTextFile('\n')
-    funWriteToScreenAndTextFile('---------')
+    funWriteToScreenAndTextFile('\n')
+    funWriteToScreenAndTextFile('==========')
+    funWriteToScreenAndTextFile('Details Of Script(s) Run:')
+    funWriteToScreenAndTextFile('\n')
     funWriteToScreenAndTextFile('Script:                 nhd_network_augment.py (alpha solution with tweaks)')
     funWriteToScreenAndTextFile('Last Edit Date:         02/09/21 - GJC_Development Branch')
     funWriteToScreenAndTextFile('---------')
@@ -1022,8 +1083,8 @@ def main():
 
 
     # get network data
-    funWriteToScreenAndTextFile('---------')
-    funWriteToScreenAndTextFile("Extracting and organizing supernetwork data...")
+    funWriteToScreenAndTextFile('==========')
+    funWriteToScreenAndTextFile("Extracting and Organizing Supernetwork Data...")
     data, RouteLink, network_data = get_network_data(supernetwork)
     RouteLink = RouteLink.set_index(network_data["columns"]["key"])
     funWriteToScreenAndTextFile('\n')
@@ -1032,11 +1093,12 @@ def main():
     # prune headwaters
     if prune and snap:
         
-        funWriteToScreenAndTextFile('---------')
-        funWriteToScreenAndTextFile("Prune, snap, then merge:")
+        funWriteToScreenAndTextFile('==========')
+        funWriteToScreenAndTextFile("Prune, Snap, Then Merge:")
+        funWriteToScreenAndTextFile('\n')
 
         funWriteToScreenAndTextFile('---')
-        funWriteToScreenAndTextFile("pruning headwaters...")
+        funWriteToScreenAndTextFile("Pruning Headwaters...")
         objTimeStartSection = time.time()  # record the start time, for this part of the code
         data_pruned = prune_headwaters(data, threshold, network_data)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
@@ -1048,7 +1110,7 @@ def main():
         pruned_segs = list(np.setdiff1d(data.index, data_pruned.index))
 
         funWriteToScreenAndTextFile('---')
-        funWriteToScreenAndTextFile("snapping junctions...")
+        funWriteToScreenAndTextFile("Snapping Junctions...")
         objTimeStartSection = time.time()  # record the start time, for this part of the code
         data_snapped = snap_junctions(data_pruned, threshold, network_data)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
@@ -1057,7 +1119,7 @@ def main():
         funWriteToScreenAndTextFile('\n')
 
         funWriteToScreenAndTextFile('---')
-        funWriteToScreenAndTextFile("merging segments...")
+        funWriteToScreenAndTextFile("Merging Segments...")
         objTimeStartSection = time.time()  # record the start time, for this part of the code
         data_merged, qlat_destinations = segment_merge(data, data_snapped, network_data, threshold, pruned_segs)
         objTimeEndSection = time.time()  # record the end time, for this part of the code
@@ -1068,8 +1130,8 @@ def main():
 
     if snap and not prune:
         
-        funWriteToScreenAndTextFile('---------')
-        funWriteToScreenAndTextFile("Snap and merge:")
+        funWriteToScreenAndTextFile('==========')
+        funWriteToScreenAndTextFile("Snap And Merge:")
         funWriteToScreenAndTextFile('\n')
 
         funWriteToScreenAndTextFile('---')
@@ -1093,8 +1155,8 @@ def main():
 
     if not snap and prune:
         
-        funWriteToScreenAndTextFile('---------')
-        funWriteToScreenAndTextFile("Prune and merge:")
+        funWriteToScreenAndTextFile('==========')
+        funWriteToScreenAndTextFile("Prune And Merge:")
         funWriteToScreenAndTextFile('\n')
 
         funWriteToScreenAndTextFile('---')
@@ -1118,8 +1180,8 @@ def main():
 
     if not snap and not prune:
         
-        funWriteToScreenAndTextFile('---------')
-        funWriteToScreenAndTextFile("Just merge:")
+        funWriteToScreenAndTextFile('==========')
+        funWriteToScreenAndTextFile("Just Merge:")
         funWriteToScreenAndTextFile('\n')
 
         funWriteToScreenAndTextFile('---')
@@ -1168,13 +1230,13 @@ def main():
         os.mkdir(dir_path)
 
     # export merged data - shape file format
-    funWriteToScreenAndTextFile('---------')
+    funWriteToScreenAndTextFile('==========')
     funWriteToScreenAndTextFile('EXPORTING VARIOUS FILES TO: {}'.format(dir_path))
     funWriteToScreenAndTextFile('--')
 
     
     # save RouteLink data (modified)
-    funWriteToScreenAndTextFile("1) Exporting RouteLink file as SHP 'file':             {}\{}".format(dir_path, filename))
+    funWriteToScreenAndTextFile("1) Exporting edited RouteLink file as SHP 'file':      {}\{}".format(dir_path, filename))
     RouteLink_edit_dropped_cols1 = RouteLink_edit.drop(columns=["time", "gages"])
     RouteLink_edit_dropped_cols1.to_file(os.path.join(dir_path, filename))
     
@@ -1200,7 +1262,7 @@ def main():
     # export original data
     if return_original:
         
-        funWriteToScreenAndTextFile("5) Exporting unmodified RouteLink file as SHP 'file':  {}\{}".format(dir_path, filename))
+        funWriteToScreenAndTextFile("5) Exporting original RouteLink file as SHP 'file':    {}\{}".format(dir_path, filename))
         RouteLink_domain = RouteLink_domain.drop(columns=["time", "gages"])
         RouteLink_domain.to_file(os.path.join(dir_path, filename))
 
@@ -1217,9 +1279,9 @@ def main():
     funWriteToScreenAndTextFile('\n')
     
     # record of function call counts
-    funWriteToScreenAndTextFile('**********')
-    funWriteToScreenAndTextFile('COUNT OF FUNCTION CALLS TOTAL / TIMES:')
-    funWriteToScreenAndTextFile('**********')
+    funWriteToScreenAndTextFile('==========')
+    funWriteToScreenAndTextFile('Count & Time Metrics  For Various Function Calls:')
+    funWriteToScreenAndTextFile('\n')
     funWriteToScreenAndTextFile('Function: <prune_headwaters> [HH:MM:SS.SS]   {}'.format(timPuningHeadwaters))
     funWriteToScreenAndTextFile('Function: <snap_junctions>   [HH:MM:SS.SS]   {}'.format(timSnapJunctions))
     funWriteToScreenAndTextFile('Function: <segment_merge>    [HH:MM:SS.SS]   {}'.format(timSegmentsMerge))
@@ -1229,42 +1291,74 @@ def main():
     funWriteToScreenAndTextFile('Function <build_reaches> Called:             {:>12,} time(s)'.format(intCounter_fun_build_reaches))
     funWriteToScreenAndTextFile('Function <prune_headwaters> Called:          {:>12,} time(s)'.format(intCounter_fun_prune_headwaters))
     funWriteToScreenAndTextFile('Function <snap_junctions> Called:            {:>12,} time(s)'.format(intCounter_fun_snap_junctions))
-    funWriteToScreenAndTextFile('Function <len_weighted_av> Called:           {:>12,} time(s) @ {:>8,} minutes total'.format(intCounter_fun_len_weighted_av, round(intTotalTime_fun_len_weighted_av / 60, 2)))
-    funWriteToScreenAndTextFile('Function <merge_parameters> Called:          {:>12,} time(s) @ {:>8,} minutes total'.format(intCounter_fun_merge_parameters, round(intTotalTime_fun_merge_parameters / 60, 2)))
-    funWriteToScreenAndTextFile('Function <correct_reach_connections> Called: {:>12,} time(s) @ {:>8,} minutes total'.format(intCounter_fun_correct_reach_connections, round(intTotalTime_fun_correct_reach_connections / 60, 2)))
-    funWriteToScreenAndTextFile('Function <upstream_merge> Called:            {:>12,} time(s) @ {:>8,} minutes total'.format(intCounter_fun_upstream_merge, round(intTotalTime_fun_upstream_merge / 60, 2)))
-    funWriteToScreenAndTextFile('Function <downstream_merge> Called:          {:>12,} time(s) @ {:>8,} minutes total'.format(intCounter_fun_downstream_merge, round(intTotalTime_fun_downstream_merge / 60, 2)))
-    funWriteToScreenAndTextFile('Function <merge_all> Called:                 {:>12,} time(s) @ {:>8,} minutes total'.format(intCounter_fun_merge_all, round(intTotalTime_fun_merge_all / 60, 2)))
-    funWriteToScreenAndTextFile('Function <update_network_data> Called:       {:>12,} time(s) @ {:>8,} minutes total'.format(intCounter_fun_update_network_data, round(intTotalTime_fun_update_network_data / 60, 2)))
+    funWriteToScreenAndTextFile('Function <len_weighted_av> Called:           {:>12,} time(s) @ {:>6,} minutes total'.format(intCounter_fun_len_weighted_av, round(intTotalTime_fun_len_weighted_av / 60, 2)))
+    funWriteToScreenAndTextFile('Function <merge_parameters> Called:          {:>12,} time(s) @ {:>6,} minutes total'.format(intCounter_fun_merge_parameters, round(intTotalTime_fun_merge_parameters / 60, 2)))
+    funWriteToScreenAndTextFile('Function <correct_reach_connections> Called: {:>12,} time(s) @ {:>6,} minutes total'.format(intCounter_fun_correct_reach_connections, round(intTotalTime_fun_correct_reach_connections / 60, 2)))
+    funWriteToScreenAndTextFile('Function <upstream_merge> Called:            {:>12,} time(s) @ {:>6,} minutes total'.format(intCounter_fun_upstream_merge, round(intTotalTime_fun_upstream_merge / 60, 2)))
+    funWriteToScreenAndTextFile('Function <downstream_merge> Called:          {:>12,} time(s) @ {:>6,} minutes total'.format(intCounter_fun_downstream_merge, round(intTotalTime_fun_downstream_merge / 60, 2)))
+    funWriteToScreenAndTextFile('Function <merge_all> Called:                 {:>12,} time(s) @ {:>6,} minutes total'.format(intCounter_fun_merge_all, round(intTotalTime_fun_merge_all / 60, 2)))
+    funWriteToScreenAndTextFile('Function <update_network_data> Called:       {:>12,} time(s) @ {:>6,} minutes total'.format(intCounter_fun_update_network_data, round(intTotalTime_fun_update_network_data / 60, 2)))
     funWriteToScreenAndTextFile('Function <qlat_destination_compute> Called:  {:>12,} time(s)'.format(intCounter_fun_qlat_destination_compute))
     funWriteToScreenAndTextFile('Function <segment_merge> Called:             {:>12,} time(s)'.format(intCounter_fun_segment_merge))
-    funWriteToScreenAndTextFile('**********')
     funWriteToScreenAndTextFile('\n')
     
+    # close the profiler and add stats to the metric, etc file
+    profiler.disable()
+    stats_cumtime = pstats.Stats(profiler).strip_dirs().sort_stats('cumtime')
+    stats_cumtime.dump_stats(objPstatDetailsDatFile)
+    stats_ncalls = pstats.Stats(profiler).strip_dirs().sort_stats('ncalls')
+    # stats.print_stats()
+    
     # let the user know summary of what happened
-    funWriteToScreenAndTextFile('---------')
-    funWriteToScreenAndTextFile('RESULTS SUMMARY:')
-    funWriteToScreenAndTextFile('---------')
+    funWriteToScreenAndTextFile('==========')
+    funWriteToScreenAndTextFile('Results Summary:')
     funWriteToScreenAndTextFile('\n')
     funWriteToScreenAndTextFile("Number of segments (as points) in original RouteLink: {:>10,}".format(len(RouteLink_domain)))
     funWriteToScreenAndTextFile("Number of segments (as points) in modified RouteLink: {:>10,}".format(len(RouteLink_edit)))
     if len(RouteLink_domain) == len(RouteLink_edit):
-        funWriteToScreenAndTextFile('--> NOTE: RouteLink has the same number of points...')
+        funWriteToScreenAndTextFile('--> NOTE: RouteLink has the same number of points (i.e., original and modified)...')
     funWriteToScreenAndTextFile('\n')
     funWriteToScreenAndTextFile('OVERALL: It took {} [HH:MM:SS.SS] (total) to execute ALL of this code'.format(funHmsString(objTimeEnd - objTimeStart)))
     funWriteToScreenAndTextFile('\n')
-    funWriteToScreenAndTextFile('Run Details Text File: {}'.format(filename_rundetails))
+    funWriteToScreenAndTextFile('Run Details Text File:                {}'.format(filename_rundetails))
+    funWriteToScreenAndTextFile('cProfiler / Pstat Details DAT File:   {}'.format(filename_pstatdetails))
+    funWriteToScreenAndTextFile('=========')
     funWriteToScreenAndTextFile('\n')
-    funWriteToScreenAndTextFile('---------')
+    
+    # show the pstats data (screen only)
+    print('================================================================')
+    print('cProfile / pstats Summary [secreen only]:')
+    print('\n')
+    print('----------')
+    print('Top 25 Cumulative Time -->')
+    print('\n')
+    stats_cumtime.print_stats(25)
+    print('\n')
+    print('----------')
+    print('Top 25 Number Calls -->')
+    print('\n')
+    stats_ncalls.print_stats(25)
+    print('\n')
+    print('================================================================')
+    
+    # finish off the code
     funWriteToScreenAndTextFile('\n')
     funWriteToScreenAndTextFile('CODE FINISHED')
-    funWriteToScreenAndTextFile('=========')
     
     # close the run details text file
     objRunDetailsTextFile.close()
+    fp.close()
     
     # end main
     
 
 if __name__ == "__main__":
+    
+    gc.enable(  )
+    gc.set_debug(gc.DEBUG_LEAK)
+    
     main()
+    
+    # show the dirt ~wink~
+    dump_garbage()
+    
