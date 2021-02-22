@@ -1,17 +1,15 @@
-=========
+================================================================
 CODE STARTING
+================================================================
 
 
-
-
-==========
 Details Of Script(s) Run:
 
 
 Script:                 nhd_network_augment.py (alpha solution with tweaks)
-Last Edit Date:         02/09/21 - GJC_Development Branch
+Last Edit Date:         02/11/21 - GJC_Development Branch
 ---------
-Time ALL Code Started:  Thu Feb 11 20:30:30 2021
+Time ALL Code Started:  Wed Feb 17 23:53:05 2021
 Arguments:              Namespace(prune=True, return_original=True, snap=True, supernetwork='Mainstems_CONUS', threshold=250)
 Supernetwork:           Mainstems_CONUS
 Threshold (m):          250
@@ -32,7 +30,7 @@ Prune, Snap, Then Merge:
 Pruning Headwaters...
 completed 1 iterations of headwater pruning
 no more short headwaters to prune
-**** Pruning the headwaters took 0:00:04.16 [HH:MM:SS.SS] ****
+**** Pruning the headwaters took 0:00:04.48 [HH:MM:SS.SS] ****
 
 
 ---
@@ -43,31 +41,19 @@ Prior to iteration 1: 3 short reaches existed in the network
 -----
 Finding non-headwater reaches
 After iteration 1:    0 short reaches remain
-**** Snapping Junctions took 0:00:03.76 [HH:MM:SS.SS] ****
+**** Snapping Junctions took 0:00:04.14 [HH:MM:SS.SS] ****
 
 
 ---
 Merging Segments...
---> Thu Feb 11 20:31:37 2021:  Function <Downstream Merge> called:  2,000 time(s) for a total of 0.8 minutes
---> Thu Feb 11 20:31:59 2021:  Function <Length Weighted Average> called:  25,000 time(s) for a total of 0.3 minutes
---> Thu Feb 11 20:32:40 2021:  Function <Downstream Merge> called:  4,000 time(s) for a total of 1.5 minutes
---> Thu Feb 11 20:32:57 2021:  Function <Merge Parameters> called:  5,000 time(s) for a total of 0.9 minutes
---> Thu Feb 11 20:33:11 2021:  Function <Length Weighted Average> called:  50,000 time(s) for a total of 0.5 minutes
---> Thu Feb 11 20:33:26 2021:  Function <Downstream Merge> called:  6,000 time(s) for a total of 2.1 minutes
---> Thu Feb 11 20:34:05 2021:  Function <Update Network Data> called: 1,000 time(s) for a total of 0.4 minutes
---> Thu Feb 11 20:34:14 2021:  Function <Length Weighted Average> called:  75,000 time(s) for a total of 0.7 minutes
---> Thu Feb 11 20:34:15 2021:  Function <Downstream Merge> called:  8,000 time(s) for a total of 2.7 minutes
---> Thu Feb 11 20:34:53 2021:  Function <Merge Parameters> called:  10,000 time(s) for a total of 1.7 minutes
---> Thu Feb 11 20:35:03 2021:  Function <Downstream Merge> called:  10,000 time(s) for a total of 3.3 minutes
---> Thu Feb 11 20:35:17 2021:  Function <Length Weighted Average> called:  100,000 time(s) for a total of 0.9 minutes
---> Thu Feb 11 20:35:47 2021:  Function <Downstream Merge> called:  12,000 time(s) for a total of 3.8 minutes
---> Thu Feb 11 20:36:15 2021:  Function <Length Weighted Average> called:  125,000 time(s) for a total of 1.1 minutes
---> Thu Feb 11 20:36:28 2021:  Function <Downstream Merge> called:  14,000 time(s) for a total of 4.4 minutes
---> Thu Feb 11 20:36:37 2021:  Function <Merge Parameters> called:  15,000 time(s) for a total of 2.5 minutes
---> Thu Feb 11 20:37:12 2021:  Function <Downstream Merge> called:  16,000 time(s) for a total of 5.0 minutes
---> Thu Feb 11 20:37:12 2021:  Function <Length Weighted Average> called:  150,000 time(s) for a total of 1.3 minutes
---> Thu Feb 11 20:37:19 2021:  Function <Update Network Data> called: 2,000 time(s) for a total of 0.6 minutes
-**** Segment merging took 0:06:46.97 [HH:MM:SS.SS] ****
+--> Wed Feb 17 23:55:49 2021:  Function <Merge Parameters> called:  5,000 times for a total of 1.0 minutes
+--> Wed Feb 17 23:55:54 2021:  Function <Downstream Merge> called:  5,000 times for a total of 2.0 minutes
+--> Wed Feb 17 23:58:06 2021:  Function <Merge Parameters> called:  10,000 times for a total of 1.9 minutes
+--> Wed Feb 17 23:58:18 2021:  Function <Downstream Merge> called:  10,000 times for a total of 3.7 minutes
+--> Thu Feb 18 00:00:11 2021:  Function <Merge Parameters> called:  15,000 times for a total of 2.9 minutes
+--> Thu Feb 18 00:00:29 2021:  Function <Downstream Merge> called:  15,000 times for a total of 5.5 minutes
+----> Thu Feb 18 00:00:49 2021:  Function <Segment Merge> - Reaches Loop called: 2,500 times for a total of 7.5 minutes
+**** Segment merging took 0:07:56.61 [HH:MM:SS.SS] ****
 
 
 ==========
@@ -77,37 +63,41 @@ EXPORTING VARIOUS FILES TO: C:\_projects\ShortSegments\github-clone\t-route\test
 2) Exporting CrossWalk file as JSON file:              C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_250m_prune_snap_merge\Crosswalk_Mainstems_CONUS_250m_prune_snap_merge.json
 3) Exporting original RouteLink file as a NetCDFfile:  C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_250m_prune_snap_merge\RouteLink_Mainstems_CONUS_250m_prune_snap_merge_original.nc
 4) Exporting edited RouteLink file as a NetCDFfile:    C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_250m_prune_snap_merge\RouteLink_Mainstems_CONUS_250m_prune_snap_merge_modified.nc
-5) Exporting original RouteLink file as SHP 'file':     C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_250m_prune_snap_merge\RouteLink_Mainstems_CONUS_250m_prune_snap_merge.shp
+5) Exporting original RouteLink file as SHP 'file':    C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_250m_prune_snap_merge\RouteLink_Mainstems_CONUS_250m_prune_snap_merge.shp
 --
-**** it took 0:00:55.89 [HH:MM:SS.SS] to export the various datasets ****
+**** it took 0:01:07.52 [HH:MM:SS.SS] to export the various datasets ****
 
 
 ---------
-Time ALL Code Finished: Thu Feb 11 20:38:22 2021
+Time ALL Code Finished: Thu Feb 18 00:02:20 2021
 
 
 ==========
 Count & Time Metrics  For Various Function Calls:
 
 
-Function: <prune_headwaters> [HH:MM:SS.SS]   0:00:04.16
-Function: <snap_junctions>   [HH:MM:SS.SS]   0:00:03.76
-Function: <segment_merge>    [HH:MM:SS.SS]   0:06:46.97
+Function: <prune_headwaters> [HH:MM:SS.SS]   0:00:04.48
+Function: <snap_junctions>   [HH:MM:SS.SS]   0:00:04.14
+Function: <segment_merge>    [HH:MM:SS.SS]   0:07:56.61
 --
-Function <get_network_data> Called:                     1 time(s)
-Function <network_connections> Called:                  5 time(s)
-Function <build_reaches> Called:                        5 time(s)
-Function <prune_headwaters> Called:                     1 time(s)
-Function <snap_junctions> Called:                       1 time(s)
-Function <len_weighted_av> Called:                155,268 time(s) @   1.31 minutes total
-Function <merge_parameters> Called:                17,252 time(s) @   2.79 minutes total
-Function <correct_reach_connections> Called:        2,068 time(s) @   0.45 minutes total
-Function <upstream_merge> Called:                     681 time(s) @   0.19 minutes total
-Function <downstream_merge> Called:                16,571 time(s) @   5.16 minutes total
-Function <merge_all> Called:                            0 time(s) @    0.0 minutes total
-Function <update_network_data> Called:              2,068 time(s) @   0.65 minutes total
-Function <qlat_destination_compute> Called:             1 time(s)
-Function <segment_merge> Called:                        1 time(s)
+Function <get_network_data> Called:                        1 times
+Function <network_connections> Called:                     5 times
+Function <build_reaches> Called:                           5 times
+Function <prune_headwaters> Called:                        1 times
+Function <snap_junctions> Called:                          1 times
+Function <len_weighted_av> Called:                         0 times @    0.0 minutes total
+Function <merge_parameters> Called:                   17,252 times @   3.26 minutes total
+Function <correct_reach_connections> Called:           2,068 times @   0.54 minutes total
+Function <upstream_merge> Called:                        681 times @   0.23 minutes total
+Function <downstream_merge> Called:                   16,571 times @   6.04 minutes total
+Function <merge_all> Called:                               0 times @    0.0 minutes total
+Function <update_network_data> Called:                 2,068 times @   0.77 minutes total
+Function <qlat_destination_compute> Called:                1 times
+Function <segment_merge> Called:                           1 times
+Function <segment_merge> Reaches Loop Count:           2,690 times @   7.92 minutes total
+Function <segment_merge> Reaches Loop Count A:             0 times <-- orphaned short single segment reaches)
+Function <segment_merge> Reaches Loop Count B:             0 times <-- multi segment reaches - combine into a single segment reach
+Function <segment_merge> Reaches Loop Count C:         2,068 times <-- multi segment reaches longer than threshold with some segments shorter than threshold
 
 
 ==========
@@ -118,7 +108,7 @@ Number of segments (as points) in original RouteLink:    109,222
 Number of segments (as points) in modified RouteLink:     91,967
 
 
-OVERALL: It took 0:07:52.57 [HH:MM:SS.SS] (total) to execute ALL of this code
+OVERALL: It took 0:09:14.60 [HH:MM:SS.SS] (total) to execute ALL of this code
 
 
 Run Details Text File:                RunDetails_Mainstems_CONUS_250m_prune_snap_merge.txt
@@ -126,14 +116,8 @@ cProfiler / Pstat Details DAT File:   PstatDetails_Mainstems_CONUS_250m_prune_sn
 =========
 
 
+
+
 ================================================================
-cProfile / pstats Summary:
-
-
-*** to write ***
-
-
-----------
-Top 25 Cumulative Time -->
-
-
+CODE FINISHED
+================================================================

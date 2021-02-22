@@ -1,12 +1,15 @@
-=========
+================================================================
 CODE STARTING
+================================================================
 
 
----------
+Details Of Script(s) Run:
+
+
 Script:                 nhd_network_augment.py (alpha solution with tweaks)
-Last Edit Date:         02/09/21 - GJC_Development Branch
+Last Edit Date:         02/11/21 - GJC_Development Branch
 ---------
-Time ALL Code Started:  Tue Feb  9 12:36:16 2021
+Time ALL Code Started:  Thu Feb 18 13:17:57 2021
 Arguments:              Namespace(prune=True, return_original=True, snap=True, supernetwork='Florence_FULL_RES', threshold=500)
 Supernetwork:           Florence_FULL_RES
 Threshold (m):          500
@@ -15,92 +18,102 @@ Snap:                   True
 Return Original:        True
 
 
----------
-Extracting and organizing supernetwork data...
+==========
+Extracting and Organizing Supernetwork Data...
 
 
----------
-Prune, snap, then merge:
+==========
+Prune, Snap, Then Merge:
+
+
 ---
-pruning headwaters...
+Pruning Headwaters...
 completed 1 iterations of headwater pruning
 no more short headwaters to prune
-**** Pruning the headwaters took 0:00:00.27 [HH:MM:SS.SS] ****
+**** Pruning the headwaters took 0:00:00.44 [HH:MM:SS.SS] ****
 
 
 ---
-snapping junctions...
-finding non-headwater reaches
-Prior to iteration 1, 44 short reaches existed in the network
-finding non-headwater reaches
-After iteration 1, 6 short reaches remain
-finding non-headwater reaches
-After iteration 2, 0 short reaches remain
-**** Snapping Junctions took 0:00:00.36 [HH:MM:SS.SS] ****
+Snapping Junctions...
+-----
+Finding non-headwater reaches
+Prior to iteration 1: 44 short reaches existed in the network
+-----
+Finding non-headwater reaches
+After iteration 1:    6 short reaches remain
+-----
+Finding non-headwater reaches
+After iteration 2:    0 short reaches remain
+**** Snapping Junctions took 0:00:00.57 [HH:MM:SS.SS] ****
 
 
 ---
-merging segments...
-**** Segment merging took 0:00:04.97 [HH:MM:SS.SS] ****
+Merging Segments...
+**** Segment merging took 0:00:07.96 [HH:MM:SS.SS] ****
 
 
----------
+==========
 EXPORTING VARIOUS FILES TO: C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Florence_FULL_RES_500m_prune_snap_merge
 --
-1) Exporting RouteLink file as SHP 'file':             C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Florence_FULL_RES_500m_prune_snap_merge\RouteLink_Florence_FULL_RES_500m_prune_snap_merge.shp
+1) Exporting edited RouteLink file as SHP 'file':      C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Florence_FULL_RES_500m_prune_snap_merge\RouteLink_Florence_FULL_RES_500m_prune_snap_merge.shp
 2) Exporting CrossWalk file as JSON file:              C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Florence_FULL_RES_500m_prune_snap_merge\Crosswalk_Florence_FULL_RES_500m_prune_snap_merge.json
 3) Exporting original RouteLink file as a NetCDFfile:  C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Florence_FULL_RES_500m_prune_snap_merge\RouteLink_Florence_FULL_RES_500m_prune_snap_merge_original.nc
 4) Exporting edited RouteLink file as a NetCDFfile:    C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Florence_FULL_RES_500m_prune_snap_merge\RouteLink_Florence_FULL_RES_500m_prune_snap_merge_modified.nc
-5) Exporting unmodified RouteLink file as SHP 'file':  C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Florence_FULL_RES_500m_prune_snap_merge\RouteLink_Florence_FULL_RES_500m_prune_snap_merge.shp
+5) Exporting original RouteLink file as SHP 'file':    C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Florence_FULL_RES_500m_prune_snap_merge\RouteLink_Florence_FULL_RES_500m_prune_snap_merge.shp
 --
-**** it took 0:00:00.87 [HH:MM:SS.SS] to export the various datasets ****
+**** it took 0:00:00.81 [HH:MM:SS.SS] to export the various datasets ****
 
 
 ---------
-Time ALL Code Finished: Tue Feb  9 12:36:24 2021
+Time ALL Code Finished: Thu Feb 18 13:18:08 2021
 
 
-**********
-COUNT OF FUNCTION CALLS TOTAL / TIMES:
-**********
-Function: <prune_headwaters> [HH:MM:SS.SS]   0:00:00.27
-Function: <snap_junctions>   [HH:MM:SS.SS]   0:00:00.36
-Function: <segment_merge>    [HH:MM:SS.SS]   0:00:04.97
+==========
+Count & Time Metrics  For Various Function Calls:
+
+
+Function: <prune_headwaters> [HH:MM:SS.SS]   0:00:00.44
+Function: <snap_junctions>   [HH:MM:SS.SS]   0:00:00.57
+Function: <segment_merge>    [HH:MM:SS.SS]   0:00:07.96
 --
-Function <get_network_data> Called:                     1 time(s)
-Function <network_connections> Called:                  6 time(s)
-Function <build_reaches> Called:                        6 time(s)
-Function <prune_headwaters> Called:                     1 time(s)
-Function <snap_junctions> Called:                       1 time(s)
-Function <len_weighted_av> Called:                  2,673 time(s) @     0.01 minutes total
-Function <merge_parameters> Called:                   297 time(s) @     0.03 minutes total
-Function <correct_reach_connections> Called:          237 time(s) @      0.0 minutes total
-Function <upstream_merge> Called:                      91 time(s) @     0.02 minutes total
-Function <downstream_merge> Called:                   206 time(s) @     0.04 minutes total
-Function <merge_all> Called:                            0 time(s) @      0.0 minutes total
-Function <update_network_data> Called:                237 time(s) @     0.02 minutes total
-Function <qlat_destination_compute> Called:             1 time(s)
-Function <segment_merge> Called:                        1 time(s)
-**********
+Function <get_network_data> Called:                        1 times
+Function <network_connections> Called:                     6 times
+Function <build_reaches> Called:                           6 times
+Function <prune_headwaters> Called:                        1 times
+Function <snap_junctions> Called:                          1 times
+Function <len_weighted_av> Called:                         0 times @    0.0 minutes total
+Function <merge_parameters> Called:                      297 times @   0.05 minutes total
+Function <correct_reach_connections> Called:             237 times @    0.0 minutes total
+Function <upstream_merge> Called:                         91 times @   0.02 minutes total
+Function <downstream_merge> Called:                      206 times @   0.06 minutes total
+Function <merge_all> Called:                               0 times @    0.0 minutes total
+Function <update_network_data> Called:                   237 times @   0.03 minutes total
+Function <qlat_destination_compute> Called:                1 times
+Function <segment_merge> Called:                           1 times
+Function <segment_merge> Reaches Loop Count:             585 times @   0.13 minutes total
+Function <segment_merge> Reaches Loop Count A:             0 times <-- orphaned short single segment reaches)
+Function <segment_merge> Reaches Loop Count B:             0 times <-- multi segment reaches - combine into a single segment reach
+Function <segment_merge> Reaches Loop Count C:           237 times <-- multi segment reaches longer than threshold with some segments shorter than threshold
 
 
----------
-RESULTS SUMMARY:
----------
+==========
+Results Summary:
 
 
 Number of segments (as points) in original RouteLink:      1,107
 Number of segments (as points) in modified RouteLink:        706
 
 
-OVERALL: It took 0:00:07.85 [HH:MM:SS.SS] (total) to execute ALL of this code
+OVERALL: It took 0:00:11.04 [HH:MM:SS.SS] (total) to execute ALL of this code
 
 
-Run Details Text File: RunDetails_Florence_FULL_RES_500m_prune_snap_merge.txt
-
-
----------
-
-
-CODE FINISHED
+Run Details Text File:                RunDetails_Florence_FULL_RES_500m_prune_snap_merge.txt
+cProfiler / Pstat Details DAT File:   PstatDetails_Florence_FULL_RES_500m_prune_snap_merge.dat
 =========
+
+
+
+
+================================================================
+CODE FINISHED
+================================================================

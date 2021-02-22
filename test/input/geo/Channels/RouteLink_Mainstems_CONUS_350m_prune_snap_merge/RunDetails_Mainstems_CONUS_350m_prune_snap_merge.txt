@@ -1,0 +1,125 @@
+================================================================
+CODE STARTING
+================================================================
+
+
+Details Of Script(s) Run:
+
+
+Script:                 nhd_network_augment.py (alpha solution with tweaks)
+Last Edit Date:         02/11/21 - GJC_Development Branch
+---------
+Time ALL Code Started:  Thu Feb 18 00:03:37 2021
+Arguments:              Namespace(prune=True, return_original=True, snap=True, supernetwork='Mainstems_CONUS', threshold=350)
+Supernetwork:           Mainstems_CONUS
+Threshold (m):          350
+Prune:                  True
+Snap:                   True
+Return Original:        True
+
+
+==========
+Extracting and Organizing Supernetwork Data...
+
+
+==========
+Prune, Snap, Then Merge:
+
+
+---
+Pruning Headwaters...
+completed 1 iterations of headwater pruning
+no more short headwaters to prune
+**** Pruning the headwaters took 0:00:03.90 [HH:MM:SS.SS] ****
+
+
+---
+Snapping Junctions...
+-----
+Finding non-headwater reaches
+Prior to iteration 1: 5 short reaches existed in the network
+-----
+Finding non-headwater reaches
+After iteration 1:    0 short reaches remain
+**** Snapping Junctions took 0:00:03.62 [HH:MM:SS.SS] ****
+
+
+---
+Merging Segments...
+--> Thu Feb 18 00:05:53 2021:  Function <Merge Parameters> called:  5,000 times for a total of 0.9 minutes
+--> Thu Feb 18 00:05:57 2021:  Function <Downstream Merge> called:  5,000 times for a total of 1.7 minutes
+--> Thu Feb 18 00:07:59 2021:  Function <Merge Parameters> called:  10,000 times for a total of 1.8 minutes
+--> Thu Feb 18 00:08:11 2021:  Function <Downstream Merge> called:  10,000 times for a total of 3.5 minutes
+--> Thu Feb 18 00:10:47 2021:  Function <Merge Parameters> called:  15,000 times for a total of 3.0 minutes
+--> Thu Feb 18 00:11:07 2021:  Function <Downstream Merge> called:  15,000 times for a total of 5.8 minutes
+--> Thu Feb 18 00:13:13 2021:  Function <Merge Parameters> called:  20,000 times for a total of 4.1 minutes
+--> Thu Feb 18 00:13:37 2021:  Function <Downstream Merge> called:  20,000 times for a total of 7.9 minutes
+----> Thu Feb 18 00:14:03 2021:  Function <Segment Merge> - Reaches Loop called: 2,500 times for a total of 10.3 minutes
+**** Segment merging took 0:10:53.13 [HH:MM:SS.SS] ****
+
+
+==========
+EXPORTING VARIOUS FILES TO: C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_350m_prune_snap_merge
+--
+1) Exporting edited RouteLink file as SHP 'file':      C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_350m_prune_snap_merge\RouteLink_Mainstems_CONUS_350m_prune_snap_merge.shp
+2) Exporting CrossWalk file as JSON file:              C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_350m_prune_snap_merge\Crosswalk_Mainstems_CONUS_350m_prune_snap_merge.json
+3) Exporting original RouteLink file as a NetCDFfile:  C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_350m_prune_snap_merge\RouteLink_Mainstems_CONUS_350m_prune_snap_merge_original.nc
+4) Exporting edited RouteLink file as a NetCDFfile:    C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_350m_prune_snap_merge\RouteLink_Mainstems_CONUS_350m_prune_snap_merge_modified.nc
+5) Exporting original RouteLink file as SHP 'file':    C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_Mainstems_CONUS_350m_prune_snap_merge\RouteLink_Mainstems_CONUS_350m_prune_snap_merge.shp
+--
+**** it took 0:01:18.60 [HH:MM:SS.SS] to export the various datasets ****
+
+
+---------
+Time ALL Code Finished: Thu Feb 18 00:15:58 2021
+
+
+==========
+Count & Time Metrics  For Various Function Calls:
+
+
+Function: <prune_headwaters> [HH:MM:SS.SS]   0:00:03.90
+Function: <snap_junctions>   [HH:MM:SS.SS]   0:00:03.62
+Function: <segment_merge>    [HH:MM:SS.SS]   0:10:53.13
+--
+Function <get_network_data> Called:                        1 times
+Function <network_connections> Called:                     5 times
+Function <build_reaches> Called:                           5 times
+Function <prune_headwaters> Called:                        1 times
+Function <snap_junctions> Called:                          1 times
+Function <len_weighted_av> Called:                         0 times @    0.0 minutes total
+Function <merge_parameters> Called:                   22,640 times @    4.7 minutes total
+Function <correct_reach_connections> Called:           2,198 times @   0.56 minutes total
+Function <upstream_merge> Called:                        826 times @   0.31 minutes total
+Function <downstream_merge> Called:                   21,814 times @    8.7 minutes total
+Function <merge_all> Called:                               0 times @    0.0 minutes total
+Function <update_network_data> Called:                 2,198 times @   0.83 minutes total
+Function <qlat_destination_compute> Called:                1 times
+Function <segment_merge> Called:                           1 times
+Function <segment_merge> Reaches Loop Count:           2,684 times @  10.86 minutes total
+Function <segment_merge> Reaches Loop Count A:             0 times <-- orphaned short single segment reaches)
+Function <segment_merge> Reaches Loop Count B:             0 times <-- multi segment reaches - combine into a single segment reach
+Function <segment_merge> Reaches Loop Count C:         2,198 times <-- multi segment reaches longer than threshold with some segments shorter than threshold
+
+
+==========
+Results Summary:
+
+
+Number of segments (as points) in original RouteLink:    109,222
+Number of segments (as points) in modified RouteLink:     86,577
+
+
+OVERALL: It took 0:12:20.90 [HH:MM:SS.SS] (total) to execute ALL of this code
+
+
+Run Details Text File:                RunDetails_Mainstems_CONUS_350m_prune_snap_merge.txt
+cProfiler / Pstat Details DAT File:   PstatDetails_Mainstems_CONUS_350m_prune_snap_merge.dat
+=========
+
+
+
+
+================================================================
+CODE FINISHED
+================================================================

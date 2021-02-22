@@ -1,0 +1,95 @@
+================================================================
+CODE STARTING
+================================================================
+
+
+Details Of Script(s) Run:
+
+
+Script:                 nhd_network_augment.py (alpha solution with tweaks)
+Last Edit Date:         02/11/21 - GJC_Development Branch
+---------
+Time ALL Code Started:  Tue Feb 16 22:34:40 2021
+Arguments:              Namespace(prune=False, return_original=False, snap=False, supernetwork='CapeFear_FULL_RES', threshold=350)
+Supernetwork:           CapeFear_FULL_RES
+Threshold (m):          350
+Prune:                  False
+Snap:                   False
+Return Original:        False
+
+
+==========
+Extracting and Organizing Supernetwork Data...
+
+
+==========
+Just Merge:
+
+
+---
+merging segments...
+--> Tue Feb 16 22:35:19 2021:  Function <Update Network Data> called: 1,000 time(s) for a total of 0.1 minutes
+--> Tue Feb 16 22:35:58 2021:  Function <Update Network Data> called: 2,000 time(s) for a total of 0.3 minutes
+**** Segment merging took 0:01:22.39 [HH:MM:SS.SS]
+
+
+==========
+EXPORTING VARIOUS FILES TO: C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_CapeFear_FULL_RES_350m_prune_snap_merge
+--
+1) Exporting edited RouteLink file as SHP 'file':      C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_CapeFear_FULL_RES_350m_prune_snap_merge\RouteLink_CapeFear_FULL_RES_350m_prune_snap_merge.shp
+2) Exporting CrossWalk file as JSON file:              C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_CapeFear_FULL_RES_350m_prune_snap_merge\Crosswalk_CapeFear_FULL_RES_350m_prune_snap_merge.json
+3) Exporting original RouteLink file as a NetCDFfile:  C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_CapeFear_FULL_RES_350m_prune_snap_merge\RouteLink_CapeFear_FULL_RES_350m_prune_snap_merge_original.nc
+4) Exporting edited RouteLink file as a NetCDFfile:    C:\_projects\ShortSegments\github-clone\t-route\test\input\geo\Channels\RouteLink_CapeFear_FULL_RES_350m_prune_snap_merge\RouteLink_CapeFear_FULL_RES_350m_prune_snap_merge_modified.nc
+--
+**** it took 0:00:04.15 [HH:MM:SS.SS] to export the various datasets ****
+
+
+---------
+Time ALL Code Finished: Tue Feb 16 22:36:08 2021
+
+
+==========
+Count & Time Metrics  For Various Function Calls:
+
+
+Function: <prune_headwaters> [HH:MM:SS.SS]   None
+Function: <snap_junctions>   [HH:MM:SS.SS]   None
+Function: <segment_merge>    [HH:MM:SS.SS]   0:01:22.39
+--
+Function <get_network_data> Called:                     1 time(s)
+Function <network_connections> Called:                  1 time(s)
+Function <build_reaches> Called:                        1 time(s)
+Function <prune_headwaters> Called:                     0 time(s)
+Function <snap_junctions> Called:                       0 time(s)
+Function <len_weighted_av> Called:                 24,966 time(s) @    0.2 minutes total
+Function <merge_parameters> Called:                 2,774 time(s) @   0.43 minutes total
+Function <correct_reach_connections> Called:        1,905 time(s) @    0.0 minutes total
+Function <upstream_merge> Called:                     853 time(s) @   0.23 minutes total
+Function <downstream_merge> Called:                 1,703 time(s) @   0.51 minutes total
+Function <merge_all> Called:                          218 time(s) @   0.06 minutes total
+Function <update_network_data> Called:              2,123 time(s) @   0.29 minutes total
+Function <qlat_destination_compute> Called:             1 time(s)
+Function <segment_merge> Called:                        1 time(s)
+
+
+==========
+Results Summary:
+
+
+Number of segments (as points) in original RouteLink:     15,210
+Number of segments (as points) in modified RouteLink:     12,415
+
+
+OVERALL: It took 0:01:27.72 [HH:MM:SS.SS] (total) to execute ALL of this code
+
+
+Run Details Text File:                RunDetails_CapeFear_FULL_RES_350m_prune_snap_merge.txt
+cProfiler / Pstat Details DAT File:   PstatDetails_CapeFear_FULL_RES_350m_prune_snap_merge.dat
+=========
+
+
+
+
+================================================================
+CODE FINISHED
+================================================================

@@ -1,0 +1,30 @@
+================================================================
+CODE STARTING
+================================================================
+
+
+Details Of Script(s) Run:
+
+
+Script:                 nhd_network_augment.py (alpha solution with tweaks)
+Last Edit Date:         02/11/21 - GJC_Development Branch
+---------
+Time ALL Code Started:  Thu Feb 18 00:47:28 2021
+Arguments:              Namespace(prune=True, return_original=True, snap=True, supernetwork='USSEast_HU03_FULL_RES', threshold=100)
+Supernetwork:           USSEast_HU03_FULL_RES
+Threshold (m):          100
+Prune:                  True
+Snap:                   True
+Return Original:        True
+
+
+==========
+Extracting and Organizing Supernetwork Data...
+
+
+==========
+Prune, Snap, Then Merge:
+
+
+---
+Pruning Headwaters...
